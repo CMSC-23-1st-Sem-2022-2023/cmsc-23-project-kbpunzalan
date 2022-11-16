@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/screens/signup.dart';
 
+import '../providers/auth_provider.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
   @override
@@ -37,7 +39,9 @@ class _LoginPageState extends State<LoginPage> {
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
         onPressed: () {
-         
+          context
+              .read<AuthProvider>()
+              .signIn(emailController.text, passwordController.text);
         },
         child: const Text('Log In', style: TextStyle(color: Colors.white)),
       ),

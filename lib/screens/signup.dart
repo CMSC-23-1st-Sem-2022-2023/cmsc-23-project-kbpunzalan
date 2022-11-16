@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 
+import '../providers/auth_provider.dart';
+
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
   @override
@@ -34,6 +36,10 @@ class _SignupPageState extends State<SignupPage> {
       child: ElevatedButton(
         onPressed: () {
           //call the auth provider here
+          context
+              .read<AuthProvider>()
+              .signUp(emailController.text, passwordController.text);
+          Navigator.pop(context);
         },
         child: const Text('Sign up', style: TextStyle(color: Colors.white)),
       ),
