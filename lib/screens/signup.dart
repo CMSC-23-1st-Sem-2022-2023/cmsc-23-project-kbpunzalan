@@ -78,60 +78,77 @@ class _SignupPageState extends State<SignupPage> {
       },
     );
 
-    final signupButton = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: ElevatedButton(
-        onPressed: () {
-          if (formKey.currentState!.validate()) {
-            //check if form data are valid,
-            // your process task ahed if all data are valid
-            //call the auth provider here
-            context.read<AuthProvider>().signUp(
-                firstNameController.text,
-                lastNameController.text,
-                emailController.text,
-                passwordController.text);
-            Navigator.pop(context);
-          }
-        },
-        child: const Text('Sign up', style: TextStyle(color: Colors.white)),
-      ),
-    );
-
     final backButton = Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
-        onPressed: () async {
-          Navigator.pop(context);
-        },
-        child: const Text('Back', style: TextStyle(color: Colors.white)),
+        onPressed: () => Navigator.pop(context),
+        child: const Text('Go Back', style: TextStyle(color: Colors.white)),
       ),
+    );
+
+    final signupButton = TextButton(
+      style: TextButton.styleFrom(
+          backgroundColor: Colors.black,
+          padding: const EdgeInsets.all(16.0),
+          textStyle: const TextStyle(fontSize: 20),
+          foregroundColor: Colors.white),
+      onPressed: () async {
+        if (formKey.currentState!.validate()) {
+          //check if form data are valid,
+          // your process task ahed if all data are valid
+          //call the auth provider here
+          context.read<AuthProvider>().signUp(
+              firstNameController.text,
+              lastNameController.text,
+              emailController.text,
+              passwordController.text);
+          Navigator.pop(context);
+        }
+      },
+      child: const Text('Let\'s Do This!'),
     );
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Form(
+      body: Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+        Form(
           key: formKey,
           child: ListView(
             shrinkWrap: true,
             padding: const EdgeInsets.only(left: 40.0, right: 40.0),
             children: <Widget>[
-              const Text(
-                "Sign Up",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/todo.png',
+                    height: 90,
+                    width: 90,
+                  ),
+                  const Text(
+                    "Sign Up",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 30,
+                      fontStyle: FontStyle.italic,
+                      // color: Colors.grey,
+                    ),
+                  ),
+                ],
               ),
+              const SizedBox(height: 10),
               firstName,
               lastName,
               email,
               password,
+              const SizedBox(height: 20),
               signupButton,
               backButton
             ],
           ),
         ),
-      ),
+      ]),
     );
   }
 }

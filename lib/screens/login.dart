@@ -51,10 +51,15 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     final loginButton = Padding(
-      key: const Key('loginButton'),
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: ElevatedButton(
-        onPressed: () {
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextButton(
+        key: const Key('loginUpButton'),
+        style: TextButton.styleFrom(
+            backgroundColor: Colors.black,
+            padding: const EdgeInsets.all(16.0),
+            textStyle: const TextStyle(fontSize: 20),
+            foregroundColor: Colors.white),
+        onPressed: () async {
           if (formKey.currentState!.validate()) {
             //check if form data are valid,
             // your process task ahed if all data are valid
@@ -63,22 +68,36 @@ class _LoginPageState extends State<LoginPage> {
                 .signIn(emailController.text, passwordController.text);
           }
         },
-        child: const Text('Log In', style: TextStyle(color: Colors.white)),
+        child: const Text('Login'),
       ),
     );
 
     final signUpButton = Padding(
-      key: const Key('signUpButton'),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextButton(
+        key: const Key('signUpButton'),
+        style: TextButton.styleFrom(
+            backgroundColor: Colors.black,
+            padding: const EdgeInsets.all(16.0),
+            textStyle: const TextStyle(fontSize: 20),
+            foregroundColor: Colors.white),
+        onPressed: () async {
+          //check if form data are valid,
+          // your process task ahed if all data are valid
+          //call the auth provider here
+          Navigator.pushNamed(context, '/signup');
+        },
+        child: const Text('Sign Up'),
+      ),
+    );
+
+    final backButton = Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
         onPressed: () async {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const SignupPage(),
-            ),
-          );
+          Navigator.pop(context);
         },
-        child: const Text('Sign Up', style: TextStyle(color: Colors.white)),
+        child: const Text('Go Back', style: TextStyle(color: Colors.white)),
       ),
     );
 
@@ -91,15 +110,33 @@ class _LoginPageState extends State<LoginPage> {
             shrinkWrap: true,
             padding: const EdgeInsets.only(left: 40.0, right: 40.0),
             children: <Widget>[
-              const Text(
-                "Login",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/todo.png',
+                    height: 90,
+                    width: 90,
+                  ),
+                  const Text(
+                    "Login",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 30,
+                      fontStyle: FontStyle.italic,
+                      // color: Colors.grey,
+                    ),
+                  ),
+                ],
               ),
+              const SizedBox(height: 10),
               email,
               password,
+              const SizedBox(height: 20),
               loginButton,
               signUpButton,
+              backButton,
             ],
           ),
         ),

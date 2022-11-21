@@ -1,16 +1,21 @@
 /*
-  Created by: Claizel Coubeili Cepe
-  Date: 27 October 2022
-  Description: Sample todo app with networking
+  Author: Kurt Brian Daine B. Punzalan
+  Section: C4-L
+  Date Created: November 21, 2022
+  Exercise Number: 7
+  Program Description: User Authentication and Automated Tests
 */
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
+import 'package:week7_networking_discussion/screens/signup.dart';
 import 'package:week7_networking_discussion/screens/todo_page.dart';
 import 'package:week7_networking_discussion/screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'providers/auth_provider.dart';
+import 'screens/homepage.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -40,7 +45,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SimpleTodo',
       initialRoute: '/',
-      routes: {'/': (context) => const AuthWrapper()},
+      routes: {
+        '/': (context) => const AuthWrapper(),
+        '/signup': (context) => const SignupPage(),
+        '/login': (context) => const LoginPage(),
+      },
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -56,7 +65,7 @@ class AuthWrapper extends StatelessWidget {
     if (context.watch<AuthProvider>().isAuthenticated) {
       return const TodoPage();
     } else {
-      return const LoginPage();
+      return const HomePage();
     }
   }
 }

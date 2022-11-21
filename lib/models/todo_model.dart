@@ -1,9 +1,3 @@
-/*
-  Created by: Claizel Coubeili Cepe
-  Date: 27 October 2022
-  Description: Sample todo app with networking
-*/
-
 import 'dart:convert';
 
 class Todo {

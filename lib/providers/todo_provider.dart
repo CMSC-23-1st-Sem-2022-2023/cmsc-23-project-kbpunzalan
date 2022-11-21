@@ -1,9 +1,3 @@
-/*
-  Created by: Claizel Coubeili Cepe
-  Date: 27 October 2022
-  Description: Sample todo app with networking
-*/
-
 import 'package:flutter/material.dart';
 import 'package:week7_networking_discussion/api/firebase_todo_api.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
