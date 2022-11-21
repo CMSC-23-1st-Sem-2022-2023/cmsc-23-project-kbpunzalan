@@ -7,18 +7,18 @@ import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 
 class FirebaseAuthAPI {
   // instance of firebase auth
-  // static final FirebaseAuth auth = FirebaseAuth.instance;
-  // static final FirebaseFirestore db = FirebaseFirestore.instance;
+  static final FirebaseAuth auth = FirebaseAuth.instance;
+  static final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  final db = FakeFirebaseFirestore();
+  // final db = FakeFirebaseFirestore();
 
-  final auth = MockFirebaseAuth(
-      mockUser: MockUser(
-    isAnonymous: false,
-    uid: 'someuid',
-    email: 'charlie@paddyspub.com',
-    displayName: 'Charlie',
-  ));
+  // final auth = MockFirebaseAuth(
+  //     mockUser: MockUser(
+  //   isAnonymous: false,
+  //   uid: 'someuid',
+  //   email: 'charlie@paddyspub.com',
+  //   displayName: 'Charlie',
+  // ));
 
   // get the auth state changes
   // auth state change: notifies about changes from the user sign in stage
@@ -52,7 +52,8 @@ class FirebaseAuthAPI {
   }
 
   // new user - register
-  void signUp(String email, String password) async {
+  void signUp(
+      String firstName, String lastName, String email, String password) async {
     UserCredential credential;
     try {
       // create a user
@@ -64,7 +65,7 @@ class FirebaseAuthAPI {
       if (credential.user != null) {
         // if user is created
         // method defined to save user in the database
-        saveUserToFirestore(credential.user?.uid, email);
+        saveUserToFirestore(credential.user?.uid, firstName, lastName, email);
       }
     } on FirebaseAuthException catch (e) {
       //possible to return something more useful
@@ -86,10 +87,16 @@ class FirebaseAuthAPI {
     auth.signOut();
   }
 
-  void saveUserToFirestore(String? uid, String email) async {
+  void saveUserToFirestore(
+      String? uid, String firstName, String lastName, String email) async {
     try {
       // uid is the generated user id
+      // add all fields in the users database
       await db.collection("users").doc(uid).set({"email": email});
+      await db.collection("users").doc(uid).update({"firstName": firstName});
+      await db.collection("users").doc(uid).update({"lastName": lastName});
+
+      // await db.collection("users").doc(uid).set({"lastName": lastName});
     } on FirebaseException catch (e) {
       print(e.message);
     }

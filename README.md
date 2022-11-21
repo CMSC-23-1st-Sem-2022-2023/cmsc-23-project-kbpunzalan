@@ -1,26 +1,18 @@
-# Simple Todo App using Firebase
+# Details
+- Kurt Brian Daine B. Punzalan
+- 2020-00772
+- C4-L
+- Week 08: User Authentication and Automated Tests
 
-The todo app connects to firebase cloud firestore and authentication. It uses a provider for state management
+# How to Run the Program
+flutter run --no-sound-null-safety
 
-## Folder Structure
-```
-lib
-├───api
-│   └───firebase_auth_api.dart*
-│   └───firebase_todo_api.dart
-├───models
-│   └───todo_model.dart
-├───providers
-│   └───todo_provider.dart
-│   └───auth_provider.dart*
-├───screens
-│   ├───modal_todo.dart
-│   └───todo_page.dart
-│   └───login.dart*
-│   └───signup.dart*
-└───main.dart
-```
+# Screenshots
 
-* Models - contains the data model used
-* Providers - contains the Todo provider that contains the data and method logic
-* Screens - contains the screen/widgets used
+
+# Things you did in the code (logic, solutions)
+
+# Challenges faced when developing the app
+
+
+# Test Cases
