@@ -2,16 +2,14 @@
 - Kurt Brian Daine B. Punzalan
 - 2020-00772
 - C4-L
-- Week 08: User Authentication and Automated Tests
-
-# How to Run the Program
-flutter run --no-sound-null-safety
+- Project
 
 # Screenshots
-![](screenshots/s01.png)
 
 
 # Things you did in the code (logic, solutions)
+- added bottom navigation when signed in
+- when not signed in, user will be directed to the homepage, else to the feed
 
 # Challenges faced when developing the app
 
