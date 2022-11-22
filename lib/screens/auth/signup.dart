@@ -1,9 +1,8 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
-import 'package:email_validator/email_validator.dart';
+import '../../providers/auth_provider.dart';
+import 'package:date_field/date_field.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -14,53 +13,71 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
+    TextEditingController birthdateController = TextEditingController();
+    TextEditingController nameController = TextEditingController();
+    TextEditingController locationController = TextEditingController();
+    TextEditingController userNameController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
-    TextEditingController firstNameController = TextEditingController();
-    TextEditingController lastNameController = TextEditingController();
 
     final formKey = GlobalKey<FormState>();
 
-    //! added specifications (first name and last name text fields)
-    final firstName = TextFormField(
-      key: const Key('fNameField'),
-      controller: firstNameController,
+    final name = TextFormField(
+      key: const Key('nameField'),
+      controller: nameController,
       decoration: const InputDecoration(
-        hintText: 'First Name',
+        hintText: 'Name',
       ),
       validator: (value) {
         if (value!.isEmpty) {
-          return 'First name field cannot be empty!';
+          return 'Name field cannot be empty!';
         }
         return null;
       },
     );
 
-    final lastName = TextFormField(
-      key: const Key('lNameField'),
-      controller: lastNameController,
+    final location = TextFormField(
+      key: const Key('locationField'),
+      controller: locationController,
       decoration: const InputDecoration(
-        hintText: 'Last Name',
+        hintText: 'Location',
       ),
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Last name field cannot be empty!';
+          return 'Location field cannot be empty!';
         }
         return null;
       },
     );
 
-    final email = TextFormField(
-      controller: emailController,
+    final userName = TextFormField(
+      key: const Key('usernameField'),
+      controller: userNameController,
       decoration: const InputDecoration(
-        hintText: "Email",
+        hintText: 'Username',
       ),
-      // autovalidate package (check dependencies)
       validator: (value) {
-        if (!EmailValidator.validate(value)) {
-          return "Please enter a valid email";
+        if (value!.isEmpty) {
+          return 'Username field cannot be empty!';
         }
         return null;
+      },
+    );
+
+    final dateInput = DateTimeFormField(
+      key: const Key('dateField'),
+      decoration: const InputDecoration(
+        hintStyle: TextStyle(color: Colors.black),
+        labelText: 'Birthdate',
+      ),
+      mode: DateTimeFieldPickerMode.date,
+      validator: (value) {
+        // TODO: change to string
+        if (value == null) {
+          return "Birthdate field cannot be empty!";
+        } else {
+          birthdateController.text = value.toString();
+          return null;
+        }
       },
     );
 
@@ -100,10 +117,12 @@ class _SignupPageState extends State<SignupPage> {
           //call the auth provider here
           Navigator.pop(context);
           context.read<AuthProvider>().signUp(
-              firstNameController.text,
-              lastNameController.text,
-              emailController.text,
-              passwordController.text);
+                nameController.text,
+                birthdateController.text,
+                locationController.text,
+                userNameController.text,
+                passwordController.text,
+              );
         }
       },
       child: const Text('Let\'s Do This!'),
@@ -111,45 +130,49 @@ class _SignupPageState extends State<SignupPage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-        Form(
-          key: formKey,
-          child: ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/todo.png',
-                    height: 90,
-                    width: 90,
-                  ),
-                  const Text(
-                    "Sign Up",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 30,
-                      fontStyle: FontStyle.italic,
-                      // color: Colors.grey,
+      body: Form(
+        key: formKey,
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/todo.png',
+                      height: 90,
+                      width: 90,
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              firstName,
-              lastName,
-              email,
-              password,
-              const SizedBox(height: 20),
-              signupButton,
-              backButton
-            ],
-          ),
+                    const Text(
+                      "Sign Up",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 30,
+                        fontStyle: FontStyle.italic,
+                        // color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            name,
+            dateInput,
+            location,
+            userName,
+            password,
+            const SizedBox(height: 20),
+            signupButton,
+            backButton
+          ],
         ),
-      ]),
+      ),
     );
   }
 }

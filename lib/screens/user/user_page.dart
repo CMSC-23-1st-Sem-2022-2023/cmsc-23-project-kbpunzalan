@@ -5,6 +5,7 @@ import 'package:week7_networking_discussion/models/user_model.dart';
 import 'package:week7_networking_discussion/providers/user_provider.dart';
 import 'package:week7_networking_discussion/screens/user/modal_user.dart';
 import 'package:substring_highlight/substring_highlight.dart';
+import '../providers/auth_provider.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -83,19 +84,18 @@ class _UserPageState extends State<UserPage> {
                           // not case sensitive
                           if (otherUsers.id != mainUser.id &&
                               searchFriend.text != "" &&
-                              otherUsers.userName.toLowerCase().contains(
+                              otherUsers.username.toLowerCase().contains(
                                     searchFriend.text.toLowerCase(),
                                   )) {
-                            print("FIRST TODO: ${mainUser.id}");
+                            print("FIRST USER: ${mainUser.id}");
                             return Card(
                               child: ListTile(
                                 leading: const Icon(Icons.people),
-                                title: SubstringHighlight(
-                                  // ui: highlight the words search with red
-                                  text: otherUsers.displayName,
+                                title: Text("${otherUsers.name}"),
+                                subtitle: SubstringHighlight(
+                                  text: otherUsers.username,
                                   term: searchFriend.text,
                                 ),
-                                subtitle: Text("@${otherUsers.userName}"),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -210,7 +210,7 @@ class _UserPageState extends State<UserPage> {
     } else if (mainUser.friends!.contains(user.id)) {
       return singleButtonStatus(user, "Unfriend", "Unfriend",
           Colors.red.shade100, Colors.red.shade700);
-    } else if (mainUser.sentFriendRequest!.contains(user.id)) {
+    } else if (mainUser.sentFriendRequests!.contains(user.id)) {
       return singleButtonStatus(user, "Cancel Request", "Cancel Request",
           Colors.red.shade100, Colors.red.shade700);
     } else {

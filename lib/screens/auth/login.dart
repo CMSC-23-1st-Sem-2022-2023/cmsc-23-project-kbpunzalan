@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
-import 'package:email_validator/email_validator.dart';
 import '../../providers/auth_provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,21 +12,20 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
+    TextEditingController userNameController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
     final formKey = GlobalKey<FormState>();
 
-    final email = TextFormField(
-      key: const Key('emailField'),
-      controller: emailController,
+    final userName = TextFormField(
+      key: const Key('usernameField'),
+      controller: userNameController,
       decoration: const InputDecoration(
-        hintText: "Email",
+        hintText: 'Username',
       ),
-      // autovalidate package (check dependencies)
       validator: (value) {
-        if (!EmailValidator.validate(value)) {
-          return "Please enter a valid email";
+        if (value!.isEmpty) {
+          return 'Username field cannot be empty!';
         }
         return null;
       },
@@ -64,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
             // your process task ahed if all data are valid
             context
                 .read<AuthProvider>()
-                .signIn(emailController.text, passwordController.text);
+                .signIn(userNameController.text, passwordController.text);
             Navigator.pop(context);
           }
         },
@@ -112,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               const SizedBox(height: 10),
-              email,
+              userName,
               password,
               const SizedBox(height: 20),
               loginButton,

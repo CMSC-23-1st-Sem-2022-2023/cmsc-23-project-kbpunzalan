@@ -53,19 +53,26 @@ class FirebaseAuthAPI {
 
   // new user - register
   void signUp(
-      String firstName, String lastName, String email, String password) async {
+    String name,
+    String birthdate,
+    String location,
+    String username,
+    String password,
+  ) async {
     UserCredential credential;
     try {
       // create a user
       // returns user credential if successfully created user
       credential = await auth.createUserWithEmailAndPassword(
-        email: email,
+        email:
+            username, // TODO: change to username only (not email and password)
         password: password,
       );
       if (credential.user != null) {
         // if user is created
         // method defined to save user in the database
-        saveUserToFirestore(credential.user?.uid, firstName, lastName, email);
+        saveUserToFirestore(
+            credential.user?.uid, name, birthdate, location, username);
       }
     } on FirebaseAuthException catch (e) {
       //possible to return something more useful
@@ -87,15 +94,29 @@ class FirebaseAuthAPI {
     auth.signOut();
   }
 
-  void saveUserToFirestore(
-      String? uid, String firstName, String lastName, String email) async {
+  void saveUserToFirestore(String? uid, String name, String birthdate,
+      String location, String username) async {
     try {
       // uid is the generated user id
       // add all fields in the users database
-      await db.collection("users").doc(uid).set({"email": email});
-      await db.collection("users").doc(uid).update({"firstName": firstName});
-      await db.collection("users").doc(uid).update({"lastName": lastName});
-
+      final userData = {
+        "id": uid,
+        "name": name,
+        "birthdate": birthdate,
+        "location": location,
+        "username": username,
+        "sentFriendRequests": [],
+        "receivedFriendRequests": [],
+        "friends": [],
+      };
+      await db
+          .collection("users")
+          .doc(uid)
+          .set(userData)
+          .then((value) => print("User Added"))
+          .catchError(
+            (error) => print("Failed to add user: $error"),
+          );
       // await db.collection("users").doc(uid).set({"lastName": lastName});
     } on FirebaseException catch (e) {
       print(e.message);

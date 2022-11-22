@@ -99,13 +99,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.2"
-  email_validator:
+  date_field:
     dependency: "direct main"
     description:
-      name: email_validator
+      name: date_field
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.6"
+    version: "3.0.2"
   equatable:
     dependency: transitive
     description:
