@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
-import 'package:week7_networking_discussion/screens/login.dart';
-import 'package:week7_networking_discussion/screens/signup.dart';
+import 'package:week7_networking_discussion/screens/auth/login.dart';
+import 'package:week7_networking_discussion/screens/auth/signup.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

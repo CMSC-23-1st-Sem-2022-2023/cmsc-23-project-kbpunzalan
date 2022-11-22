@@ -43,9 +43,8 @@ class TodoModal extends StatelessWidget {
       default:
         return TextField(
           controller: _formFieldController,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            // hintText: todoIndex != -1 ? todoItems[todoIndex].title : '',
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
           ),
         );
     }
