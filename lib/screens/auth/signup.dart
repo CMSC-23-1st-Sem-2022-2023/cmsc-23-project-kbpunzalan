@@ -41,7 +41,7 @@ class _SignupPageState extends State<SignupPage> {
 
   bool specialCharacter(String value) {
     // TODO: revise regex for special characters
-    String pattern = r'[.+,*?\^\$()\[\]\{\}|, \]';
+    String pattern = r'[^\w\s]';
     RegExp regExp = RegExp(pattern);
     if (regExp.hasMatch(value)) {
       return true;
@@ -172,9 +172,9 @@ class _SignupPageState extends State<SignupPage> {
           return 'Password must have at least 1 uppercase letter!';
         }
 
-        // if (!specialCharacter(value)) {
-        //   return 'Password must have at least 1 special character!';
-        // }
+        if (!specialCharacter(value)) {
+          return 'Password must have at least 1 special character!';
+        }
         return null;
       },
     );
