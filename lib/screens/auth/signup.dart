@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import '../../providers/auth_provider.dart';
 import 'package:date_field/date_field.dart';
+import 'package:email_validator/email_validator.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -11,25 +12,77 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  bool hasNumber(String value) {
+    String pattern = r'[0-9]';
+    RegExp regExp = RegExp(pattern);
+    if (regExp.hasMatch(value)) {
+      return true;
+    }
+    return false;
+  }
+
+  bool hasLowercase(String value) {
+    String pattern = r'[a-z]';
+    RegExp regExp = RegExp(pattern);
+    if (regExp.hasMatch(value)) {
+      return true;
+    }
+    return false;
+  }
+
+  bool hasUppercase(String value) {
+    String pattern = r'[A-Z]';
+    RegExp regExp = RegExp(pattern);
+    if (regExp.hasMatch(value)) {
+      return true;
+    }
+    return false;
+  }
+
+  bool specialCharacter(String value) {
+    // TODO: revise regex for special characters
+    String pattern = r'[.+,*?\^\$()\[\]\{\}|, \]';
+    RegExp regExp = RegExp(pattern);
+    if (regExp.hasMatch(value)) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController birthdateController = TextEditingController();
-    TextEditingController nameController = TextEditingController();
+    TextEditingController firstNameController = TextEditingController();
+    TextEditingController lastNameController = TextEditingController();
     TextEditingController locationController = TextEditingController();
     TextEditingController userNameController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
     final formKey = GlobalKey<FormState>();
 
-    final name = TextFormField(
-      key: const Key('nameField'),
-      controller: nameController,
+    final firstName = TextFormField(
+      key: const Key('firstNameField'),
+      controller: firstNameController,
       decoration: const InputDecoration(
-        hintText: 'Name',
+        hintText: 'First Name',
       ),
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Name field cannot be empty!';
+          return 'Firstname field cannot be empty!';
+        }
+        return null;
+      },
+    );
+
+    final lastName = TextFormField(
+      key: const Key('lastNameField'),
+      controller: lastNameController,
+      decoration: const InputDecoration(
+        hintText: 'Last Name',
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Lastname field cannot be empty!';
         }
         return null;
       },
@@ -49,15 +102,15 @@ class _SignupPageState extends State<SignupPage> {
       },
     );
 
-    final userName = TextFormField(
-      key: const Key('usernameField'),
+    final email = TextFormField(
+      key: const Key('emailField'),
       controller: userNameController,
       decoration: const InputDecoration(
-        hintText: 'Username',
+        hintText: 'Email',
       ),
       validator: (value) {
-        if (value!.isEmpty) {
-          return 'Username field cannot be empty!';
+        if (!EmailValidator.validate(value!)) {
+          return "Please enter a valid email";
         }
         return null;
       },
@@ -71,7 +124,6 @@ class _SignupPageState extends State<SignupPage> {
       ),
       mode: DateTimeFieldPickerMode.date,
       validator: (value) {
-        // TODO: change to string
         if (value == null) {
           return "Birthdate field cannot be empty!";
         } else {
@@ -89,8 +141,24 @@ class _SignupPageState extends State<SignupPage> {
       ),
       validator: (value) {
         // requirement is at least 6 characters
-        if (value!.length < 6) {
-          return 'Password must be at least 6 characters long!';
+        if (value!.length < 8) {
+          return 'Password must be at least 8 characters long!';
+        }
+
+        if (!hasNumber(value)) {
+          return 'Password must have at least 1 number!';
+        }
+
+        if (!hasLowercase(value)) {
+          return 'Password must have at least 1 lowercase letter!';
+        }
+
+        if (!hasUppercase(value)) {
+          return 'Password must have at least 1 uppercase letter!';
+        }
+
+        if (!specialCharacter(value)) {
+          return 'Password must have at least 1 special character!';
         }
         return null;
       },
@@ -117,7 +185,7 @@ class _SignupPageState extends State<SignupPage> {
           //call the auth provider here
           Navigator.pop(context);
           context.read<AuthProvider>().signUp(
-                nameController.text,
+                lastNameController.text,
                 birthdateController.text,
                 locationController.text,
                 userNameController.text,
@@ -162,10 +230,11 @@ class _SignupPageState extends State<SignupPage> {
               ],
             ),
             const SizedBox(height: 10),
-            name,
+            firstName,
+            lastName,
             dateInput,
             location,
-            userName,
+            email,
             password,
             const SizedBox(height: 20),
             signupButton,

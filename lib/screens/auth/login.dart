@@ -1,7 +1,8 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
-import '../../providers/auth_provider.dart';
+// import '../../providers/auth_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,15 +18,15 @@ class _LoginPageState extends State<LoginPage> {
 
     final formKey = GlobalKey<FormState>();
 
-    final userName = TextFormField(
-      key: const Key('usernameField'),
+    final email = TextFormField(
+      key: const Key('emailField'),
       controller: userNameController,
       decoration: const InputDecoration(
-        hintText: 'Username',
+        hintText: 'Email',
       ),
       validator: (value) {
-        if (value!.isEmpty) {
-          return 'Username field cannot be empty!';
+        if (!EmailValidator.validate(value!)) {
+          return "Please enter a valid email";
         }
         return null;
       },
@@ -110,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               const SizedBox(height: 10),
-              userName,
+              email,
               password,
               const SizedBox(height: 20),
               loginButton,
