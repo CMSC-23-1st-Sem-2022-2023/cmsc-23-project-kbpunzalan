@@ -51,11 +51,12 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController birthdateController = TextEditingController();
     TextEditingController firstNameController = TextEditingController();
     TextEditingController lastNameController = TextEditingController();
+    TextEditingController usernameController = TextEditingController();
+    TextEditingController birthdateController = TextEditingController();
     TextEditingController locationController = TextEditingController();
-    TextEditingController userNameController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
     final formKey = GlobalKey<FormState>();
@@ -88,6 +89,20 @@ class _SignupPageState extends State<SignupPage> {
       },
     );
 
+    final username = TextFormField(
+      key: const Key('usernameField'),
+      controller: usernameController,
+      decoration: const InputDecoration(
+        hintText: 'Username',
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Username field cannot be empty!';
+        }
+        return null;
+      },
+    );
+
     final location = TextFormField(
       key: const Key('locationField'),
       controller: locationController,
@@ -104,7 +119,7 @@ class _SignupPageState extends State<SignupPage> {
 
     final email = TextFormField(
       key: const Key('emailField'),
-      controller: userNameController,
+      controller: emailController,
       decoration: const InputDecoration(
         hintText: 'Email',
       ),
@@ -116,7 +131,7 @@ class _SignupPageState extends State<SignupPage> {
       },
     );
 
-    final dateInput = DateTimeFormField(
+    final birthdateInput = DateTimeFormField(
       key: const Key('dateField'),
       decoration: const InputDecoration(
         hintStyle: TextStyle(color: Colors.black),
@@ -157,9 +172,9 @@ class _SignupPageState extends State<SignupPage> {
           return 'Password must have at least 1 uppercase letter!';
         }
 
-        if (!specialCharacter(value)) {
-          return 'Password must have at least 1 special character!';
-        }
+        // if (!specialCharacter(value)) {
+        //   return 'Password must have at least 1 special character!';
+        // }
         return null;
       },
     );
@@ -184,11 +199,14 @@ class _SignupPageState extends State<SignupPage> {
           // your process task ahed if all data are valid
           //call the auth provider here
           Navigator.pop(context);
+
           context.read<AuthProvider>().signUp(
+                firstNameController.text,
                 lastNameController.text,
+                usernameController.text,
                 birthdateController.text,
                 locationController.text,
-                userNameController.text,
+                emailController.text,
                 passwordController.text,
               );
         }
@@ -232,7 +250,8 @@ class _SignupPageState extends State<SignupPage> {
             const SizedBox(height: 10),
             firstName,
             lastName,
-            dateInput,
+            username,
+            birthdateInput,
             location,
             email,
             password,

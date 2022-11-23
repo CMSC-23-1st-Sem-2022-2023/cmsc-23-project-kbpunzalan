@@ -53,10 +53,12 @@ class FirebaseAuthAPI {
 
   // new user - register
   void signUp(
-    String name,
+    String firstName,
+    String lastName,
+    String username,
     String birthdate,
     String location,
-    String username,
+    String email,
     String password,
   ) async {
     UserCredential credential;
@@ -64,15 +66,15 @@ class FirebaseAuthAPI {
       // create a user
       // returns user credential if successfully created user
       credential = await auth.createUserWithEmailAndPassword(
-        email:
-            username, // TODO: change to username only (not email and password)
+        email: email,
         password: password,
       );
       if (credential.user != null) {
         // if user is created
         // method defined to save user in the database
-        saveUserToFirestore(
-            credential.user?.uid, name, birthdate, location, username);
+
+        saveUserToFirestore(credential.user?.uid, firstName, lastName, username,
+            birthdate, location, email);
       }
     } on FirebaseAuthException catch (e) {
       //possible to return something more useful
@@ -94,17 +96,34 @@ class FirebaseAuthAPI {
     auth.signOut();
   }
 
-  void saveUserToFirestore(String? uid, String name, String birthdate,
-      String location, String username) async {
+  // firstName,
+  //   lastName,
+  //   username,
+  //   birthdateInput,
+  //   location,
+  //   email,
+  //   password,
+
+  void saveUserToFirestore(
+    String? uid,
+    String firstName,
+    String lastName,
+    String username,
+    String birthdateInput,
+    String location,
+    String email,
+  ) async {
     try {
       // uid is the generated user id
       // add all fields in the users database
       final userData = {
         "id": uid,
-        "name": name,
-        "birthdate": birthdate,
-        "location": location,
+        "firstName": firstName,
+        "lastName": lastName,
         "username": username,
+        "birthdateInput": birthdateInput,
+        "location": location,
+        "email": email,
         "sentFriendRequests": [],
         "receivedFriendRequests": [],
         "friends": [],
