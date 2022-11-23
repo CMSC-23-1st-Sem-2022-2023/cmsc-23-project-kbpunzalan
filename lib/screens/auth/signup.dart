@@ -40,7 +40,7 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   bool specialCharacter(String value) {
-    // TODO: revise regex for special characters
+    // from: https://stackoverflow.com/questions/18057962/regex-pattern-including-all-special-characters
     String pattern = r'[^\w\s]';
     RegExp regExp = RegExp(pattern);
     if (regExp.hasMatch(value)) {
