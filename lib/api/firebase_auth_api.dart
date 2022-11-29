@@ -29,26 +29,29 @@ class FirebaseAuthAPI {
   }
 
   // checks the email and password of the user
-  void signIn(String email, String password) async {
-    UserCredential credential;
+  Future<String> signIn(String email, String password) async {
+    // UserCredential credential;
     try {
       // is it possible to sign in using the email and password
       // will wait for the credential (await)
       // returns user credentials: access email, id, etc.
       final credential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
+      return "";
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         // error: not found (not yet registered)
         //possible to return something more useful
         //than just print an error message to improve UI/UX
-        print('No user found for that email.');
+        return 'No user found for that email.';
         // return future string if we want to return something
       } else if (e.code == 'wrong-password') {
         // wrong password
-        print('Wrong password provided for that user.');
+        return 'Wrong password provided for that user.';
       }
     }
+
+    return "";
   }
 
   // new user - register

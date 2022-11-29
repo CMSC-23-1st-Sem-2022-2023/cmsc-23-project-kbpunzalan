@@ -34,8 +34,8 @@ class AuthProvider with ChangeNotifier {
     return user != null;
   }
 
-  void signIn(String email, String password) {
-    authService.signIn(email, password);
+  Future<String> signIn(String email, String password) {
+    return authService.signIn(email, password);
   }
 
   void signOut() {

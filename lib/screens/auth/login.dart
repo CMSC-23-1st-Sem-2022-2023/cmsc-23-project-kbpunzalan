@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       validator: (value) {
         // requirement is at least 6 characters
-        if (value!.length < 6) {
+        if (value!.length < 8) {
           return 'Password must be at least 6 characters long!';
         }
         return null;
@@ -61,10 +61,20 @@ class _LoginPageState extends State<LoginPage> {
           if (formKey.currentState!.validate()) {
             //check if form data are valid,
             // your process task ahed if all data are valid
-            context
+            var message = await context
                 .read<AuthProvider>()
                 .signIn(userNameController.text, passwordController.text);
-            Navigator.pop(context);
+
+            if (message.isEmpty) {
+              Navigator.pop(context);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(message),
+                  backgroundColor: Theme.of(context).errorColor,
+                ),
+              );
+            }
           }
         },
         child: const Text('Login'),
