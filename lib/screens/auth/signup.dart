@@ -224,51 +224,55 @@ class _SignupPageState extends State<SignupPage> {
       child: const Text('Let\'s Do This!'),
     );
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Form(
-        key: formKey,
-        child: ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Form(
+            key: formKey,
+            child: ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Image.asset(
-                      'assets/images/todo.png',
-                      height: 90,
-                      width: 90,
-                    ),
-                    const Text(
-                      "Sign Up",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 30,
-                        fontStyle: FontStyle.italic,
-                        // color: Colors.grey,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/todo.png',
+                          height: 90,
+                          width: 90,
+                        ),
+                        const Text(
+                          "Sign Up",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 30,
+                            fontStyle: FontStyle.italic,
+                            // color: Colors.grey,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
+                const SizedBox(height: 10),
+                firstName,
+                lastName,
+                username,
+                birthdateInput,
+                location,
+                email,
+                password,
+                const SizedBox(height: 20),
+                signupButton,
+                backButton
               ],
             ),
-            const SizedBox(height: 10),
-            firstName,
-            lastName,
-            username,
-            birthdateInput,
-            location,
-            email,
-            password,
-            const SizedBox(height: 20),
-            signupButton,
-            backButton
-          ],
+          ),
         ),
       ),
     );
