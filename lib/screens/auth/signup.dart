@@ -58,6 +58,7 @@ class _SignupPageState extends State<SignupPage> {
     TextEditingController locationController = TextEditingController();
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+    var message = "";
 
     final formKey = GlobalKey<FormState>();
 
@@ -127,6 +128,11 @@ class _SignupPageState extends State<SignupPage> {
         if (!EmailValidator.validate(value!)) {
           return "Please enter a valid email";
         }
+
+        if (message == "The account already exists for that email.") {
+          return "The account already exists for that email.";
+        }
+
         return null;
       },
     );
@@ -194,21 +200,25 @@ class _SignupPageState extends State<SignupPage> {
           textStyle: const TextStyle(fontSize: 20),
           foregroundColor: Colors.white),
       onPressed: () async {
+        message = await context.read<AuthProvider>().signUp(
+              firstNameController.text,
+              lastNameController.text,
+              usernameController.text,
+              birthdateController.text,
+              locationController.text,
+              emailController.text,
+              passwordController.text,
+            );
+
         if (formKey.currentState!.validate()) {
           //check if form data are valid,
           // your process task ahed if all data are valid
           //call the auth provider here
-          Navigator.pop(context);
 
-          context.read<AuthProvider>().signUp(
-                firstNameController.text,
-                lastNameController.text,
-                usernameController.text,
-                birthdateController.text,
-                locationController.text,
-                emailController.text,
-                passwordController.text,
-              );
+          if (message.isEmpty) {
+            print("Successfully Signed Up User!");
+            Navigator.pop(context);
+          }
         }
       },
       child: const Text('Let\'s Do This!'),

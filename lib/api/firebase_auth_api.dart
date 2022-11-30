@@ -55,7 +55,7 @@ class FirebaseAuthAPI {
   }
 
   // new user - register
-  void signUp(
+  Future<String> signUp(
     String firstName,
     String lastName,
     String username,
@@ -78,20 +78,23 @@ class FirebaseAuthAPI {
 
         saveUserToFirestore(credential.user?.uid, firstName, lastName, username,
             birthdate, location, email);
+
+        return "";
       }
     } on FirebaseAuthException catch (e) {
       //possible to return something more useful
       //than just print an error message to improve UI/UX
       if (e.code == 'weak-password') {
-        // less than 6 characters (more than 6 characters are required)
-        print('The password provided is too weak.');
+        return 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
         // email is already in use?
-        print('The account already exists for that email.');
+        return 'The account already exists for that email.';
       }
     } catch (e) {
       print(e);
     }
+
+    return "";
   }
 
   // signout is already abstracted

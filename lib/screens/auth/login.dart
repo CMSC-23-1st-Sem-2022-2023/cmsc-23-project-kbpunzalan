@@ -18,6 +18,8 @@ class _LoginPageState extends State<LoginPage> {
 
     final formKey = GlobalKey<FormState>();
 
+    var message = "";
+
     final email = TextFormField(
       key: const Key('emailField'),
       controller: userNameController,
@@ -27,6 +29,10 @@ class _LoginPageState extends State<LoginPage> {
       validator: (value) {
         if (!EmailValidator.validate(value!)) {
           return "Please enter a valid email";
+        }
+
+        if (message == "No user found for that email.") {
+          return "No user found for that email.";
         }
         return null;
       },
@@ -40,9 +46,17 @@ class _LoginPageState extends State<LoginPage> {
         hintText: 'Password',
       ),
       validator: (value) {
-        // requirement is at least 6 characters
+        // requirement is at least 8 characters
         if (value!.length < 8) {
-          return 'Password must be at least 6 characters long!';
+          return 'Password field must be at least 8 characters long!';
+        }
+
+        // if (message == "") {
+        //   return "Password cannot be empty";
+        // }
+
+        if (message == "Wrong password provided for that user.") {
+          return "Wrong password provided for that user.";
         }
         return null;
       },
@@ -58,22 +72,17 @@ class _LoginPageState extends State<LoginPage> {
             textStyle: const TextStyle(fontSize: 20),
             foregroundColor: Colors.white),
         onPressed: () async {
+          message = await context
+              .read<AuthProvider>()
+              .signIn(userNameController.text, passwordController.text);
           if (formKey.currentState!.validate()) {
             //check if form data are valid,
             // your process task ahed if all data are valid
-            var message = await context
-                .read<AuthProvider>()
-                .signIn(userNameController.text, passwordController.text);
+
+            // there are no errr
 
             if (message.isEmpty) {
               Navigator.pop(context);
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message),
-                  backgroundColor: Theme.of(context).errorColor,
-                ),
-              );
             }
           }
         },
