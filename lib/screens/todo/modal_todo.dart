@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
+import 'package:intl/intl.dart';
 
 class TodoModal extends StatelessWidget {
   String type;
   // int todoIndex;
-  TextEditingController _formFieldController = TextEditingController();
+  final todoFormKey = GlobalKey<FormState>();
+
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _deadlineController = TextEditingController();
 
   TodoModal({
     super.key,
@@ -41,10 +46,70 @@ class TodoModal extends StatelessWidget {
         }
       // Edit and add will have input field in them
       default:
-        return TextField(
-          controller: _formFieldController,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
+        return Form(
+          key: todoFormKey,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _titleController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller:
+                      _deadlineController, //editing controller of this TextField
+                  decoration: const InputDecoration(
+                      icon: Icon(Icons.calendar_today), //icon of text field
+                      labelText: "Enter birthdate" //label text of field
+                      ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(), //get today's date
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2101),
+                    );
+
+                    if (pickedDate != null) {
+                      print(
+                          pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                      String formattedDate = DateFormat('yyyy-MM-dd').format(
+                          pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                      print(
+                          formattedDate); //formatted date output using intl package =>  2022-07-04
+                      //You can format date as per your need
+
+                      _deadlineController.text = formattedDate;
+                    } else {
+                      print("Date is not selected");
+                    }
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return "Birthdate field cannot be empty!";
+                    } else {
+                      _deadlineController.text = value.toString();
+                      return null;
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
         );
     }
@@ -59,9 +124,10 @@ class TodoModal extends StatelessWidget {
           case 'Add':
             {
               Todo temp = Todo(
-                title: _formFieldController.text,
-                description: "",
+                title: _titleController.text,
+                description: _descriptionController.text,
                 status: false,
+                deadline: _deadlineController.text,
               );
 
               context.read<TodoListProvider>().addTodo(temp);

@@ -4,6 +4,7 @@ class Todo {
   String title;
   String description;
   bool status;
+  String deadline;
   String? id;
   // final int userId;
 
@@ -12,6 +13,7 @@ class Todo {
     required this.title,
     required this.description,
     required this.status,
+    required this.deadline,
     this.id,
   });
 
@@ -21,6 +23,7 @@ class Todo {
       title: json['title'],
       description: json['description'],
       status: json['status'],
+      deadline: json['deadline'],
       id: json['id'],
       // userId: json['userId'],
     );
@@ -36,6 +39,7 @@ class Todo {
       'title': todo.title,
       'description': todo.description,
       'status': todo.status,
+      'deadline': todo.deadline,
       // 'userId': todo.userId,
     };
   }

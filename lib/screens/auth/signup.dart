@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import '../../providers/auth_provider.dart';
-import 'package:date_field/date_field.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:intl/intl.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -66,6 +66,7 @@ class _SignupPageState extends State<SignupPage> {
       key: const Key('firstNameField'),
       controller: firstNameController,
       decoration: const InputDecoration(
+        icon: Icon(Icons.person), //icon of text field
         hintText: 'First Name',
       ),
       validator: (value) {
@@ -80,6 +81,7 @@ class _SignupPageState extends State<SignupPage> {
       key: const Key('lastNameField'),
       controller: lastNameController,
       decoration: const InputDecoration(
+        icon: Icon(Icons.person), //icon of text field
         hintText: 'Last Name',
       ),
       validator: (value) {
@@ -94,6 +96,8 @@ class _SignupPageState extends State<SignupPage> {
       key: const Key('usernameField'),
       controller: usernameController,
       decoration: const InputDecoration(
+        icon: Icon(Icons.person), //icon of text field
+
         hintText: 'Username',
       ),
       validator: (value) {
@@ -108,6 +112,8 @@ class _SignupPageState extends State<SignupPage> {
       key: const Key('locationField'),
       controller: locationController,
       decoration: const InputDecoration(
+        icon: Icon(Icons.location_on), //icon of text field
+
         hintText: 'Location',
       ),
       validator: (value) {
@@ -122,6 +128,8 @@ class _SignupPageState extends State<SignupPage> {
       key: const Key('emailField'),
       controller: emailController,
       decoration: const InputDecoration(
+        icon: Icon(Icons.email), //icon of text field
+
         hintText: 'Email',
       ),
       validator: (value) {
@@ -137,13 +145,34 @@ class _SignupPageState extends State<SignupPage> {
       },
     );
 
-    final birthdateInput = DateTimeFormField(
-      key: const Key('dateField'),
+    final birthdateInput = TextFormField(
+      controller: birthdateController, //editing controller of this TextField
       decoration: const InputDecoration(
-        hintStyle: TextStyle(color: Colors.black),
-        labelText: 'Birthdate',
-      ),
-      mode: DateTimeFieldPickerMode.date,
+          icon: Icon(Icons.calendar_today), //icon of text field
+          labelText: "Enter birthdate" //label text of field
+          ),
+      onTap: () async {
+        DateTime? pickedDate = await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(), //get today's date
+          firstDate: DateTime.now(),
+          lastDate: DateTime(2101),
+        );
+
+        if (pickedDate != null) {
+          print(
+              pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+          String formattedDate = DateFormat('yyyy-MM-dd').format(
+              pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+          print(
+              formattedDate); //formatted date output using intl package =>  2022-07-04
+          //You can format date as per your need
+
+          birthdateController.text = formattedDate;
+        } else {
+          print("Date is not selected");
+        }
+      },
       validator: (value) {
         if (value == null) {
           return "Birthdate field cannot be empty!";
@@ -158,6 +187,7 @@ class _SignupPageState extends State<SignupPage> {
       controller: passwordController,
       obscureText: true,
       decoration: const InputDecoration(
+        icon: Icon(Icons.lock), //icon of text field
         hintText: 'Password',
       ),
       validator: (value) {

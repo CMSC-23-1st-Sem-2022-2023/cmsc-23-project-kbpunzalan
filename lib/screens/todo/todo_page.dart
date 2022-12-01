@@ -33,11 +33,11 @@ class _TodoPageState extends State<TodoPage> {
                 child: Text("Error encountered! ${snapshot.error}"),
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: Text("No Todos Found"),
               );
             }
@@ -58,6 +58,7 @@ class _TodoPageState extends State<TodoPage> {
                     padding: const EdgeInsets.all(15.0),
                     child: ListTile(
                       title: Text(todo.title),
+                      subtitle: Text(todo.description),
                       leading: Checkbox(
                         value: todo.status,
                         onChanged: (bool? value) {
