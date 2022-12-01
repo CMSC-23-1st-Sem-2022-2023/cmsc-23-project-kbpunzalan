@@ -102,14 +102,6 @@ class FirebaseAuthAPI {
     auth.signOut();
   }
 
-  // firstName,
-  //   lastName,
-  //   username,
-  //   birthdateInput,
-  //   location,
-  //   email,
-  //   password,
-
   void saveUserToFirestore(
     String? uid,
     String firstName,
@@ -142,7 +134,26 @@ class FirebaseAuthAPI {
           .catchError(
             (error) => print("Failed to add user: $error"),
           );
-      // await db.collection("users").doc(uid).set({"lastName": lastName});
+
+      // add a new collection for the todo of each user with a sample todo
+      final todo = {
+        "title": "Sample todo",
+        "description": "sample description",
+        "status": false,
+        // "deadline": ,
+        // "userId": uid,
+      };
+
+      final docRef =
+          await db.collection("users").doc(uid).collection("todos").add(todo);
+
+      // add its id
+      await db
+          .collection("users")
+          .doc(uid)
+          .collection("todos")
+          .doc(docRef.id)
+          .update({"id": docRef.id});
     } on FirebaseException catch (e) {
       print(e.message);
     }

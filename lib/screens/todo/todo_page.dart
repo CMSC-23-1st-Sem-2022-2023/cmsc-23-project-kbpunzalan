@@ -19,65 +19,35 @@ class _TodoPageState extends State<TodoPage> {
     // access the list of todos in the provider
     Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
 
-    return Scaffold(
-      // drawer: SafeArea(
-      //   child: Drawer(
-      //       child: ListView(padding: EdgeInsets.zero, children: [
-      //     Align(
-      //       child: ListTile(
-      //         leading: const Icon(
-      //           Icons.logout,
-      //           color: Colors.black,
-      //         ),
-      //         title: const Text('Logout'),
-      //         onTap: () {
-      //           context.read<AuthProvider>().signOut();
-      //           Navigator.pop(context);
-      //         },
-      //       ),
-      //     ),
-      //   ])),
-      // ),
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text("Todo"),
-      ),
-      body: StreamBuilder(
-        stream: todosStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text("Error encountered! ${snapshot.error}"),
-            );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (!snapshot.hasData) {
-            return Center(
-              child: Text("No Todos Found"),
-            );
-          }
-          return ListView.builder(
-            padding: const EdgeInsets.all(20.0),
-            itemCount: snapshot.data?.docs.length,
-            itemBuilder: ((context, index) {
-              Todo todo = Todo.fromJson(
-                  snapshot.data?.docs[index].data() as Map<String, dynamic>);
-              return Dismissible(
-                key: Key(todo.id.toString()),
-                onDismissed: (direction) {
-                  context.read<TodoListProvider>().changeSelectedTodo(todo);
-                  context.read<TodoListProvider>().deleteTodo();
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('${todo.title} dismissed')));
-                },
-                background: Container(
-                  color: Colors.red,
-                  child: const Icon(Icons.delete),
-                ),
-                child: Card(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: Text("Todo"),
+        ),
+        body: StreamBuilder(
+          stream: todosStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text("Error encountered! ${snapshot.error}"),
+              );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (!snapshot.hasData) {
+              return Center(
+                child: Text("No Todos Found"),
+              );
+            }
+            return ListView.builder(
+              padding: const EdgeInsets.all(20.0),
+              itemCount: snapshot.data?.docs.length,
+              itemBuilder: ((context, index) {
+                Todo todo = Todo.fromJson(
+                    snapshot.data?.docs[index].data() as Map<String, dynamic>);
+                return Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -89,7 +59,7 @@ class _TodoPageState extends State<TodoPage> {
                     child: ListTile(
                       title: Text(todo.title),
                       leading: Checkbox(
-                        value: todo.completed,
+                        value: todo.status,
                         onChanged: (bool? value) {
                           context
                               .read<TodoListProvider>()
@@ -129,24 +99,24 @@ class _TodoPageState extends State<TodoPage> {
                       ),
                     ),
                   ),
-                ),
-              );
-            }),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
-        // foregroundColor: Colors.grey,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => TodoModal(
-              type: 'Add',
-            ),
-          );
-        },
-        child: const Icon(Icons.add_outlined),
+                );
+              }),
+            );
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.black,
+          // foregroundColor: Colors.grey,
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => TodoModal(
+                type: 'Add',
+              ),
+            );
+          },
+          child: const Icon(Icons.add_outlined),
+        ),
       ),
     );
   }

@@ -5,7 +5,6 @@ import 'package:week7_networking_discussion/models/user_model.dart';
 import 'package:week7_networking_discussion/providers/user_provider.dart';
 import 'package:week7_networking_discussion/screens/user/modal_user.dart';
 import 'package:substring_highlight/substring_highlight.dart';
-import '../providers/auth_provider.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -72,10 +71,11 @@ class _UserPageState extends State<UserPage> {
                         itemCount: snapshot.data?.docs.length,
                         itemBuilder: ((context, index) {
                           // let the main user be the first user (index 0)
-                          User mainUser = User.fromJson(snapshot.data?.docs[0]
-                              .data() as Map<String, dynamic>);
+                          UserModel mainUser = UserModel.fromJson(
+                              snapshot.data?.docs[0].data()
+                                  as Map<String, dynamic>);
 
-                          User otherUsers = User.fromJson(
+                          UserModel otherUsers = UserModel.fromJson(
                               snapshot.data?.docs[index].data()
                                   as Map<String, dynamic>);
 
@@ -161,7 +161,7 @@ class _UserPageState extends State<UserPage> {
 
   // when user clicked, it will alrt the show dialog, and will do certain actions (add user, delete) provided by the modal
   Widget textButtonStyle(
-      User user, String type, String text1, Color color, Color color2) {
+      UserModel user, String type, String text1, Color color, Color color2) {
     return TextButton(
       onPressed: () {
         context.read<UserProvider>().changeSelectedUser(user);
@@ -181,7 +181,7 @@ class _UserPageState extends State<UserPage> {
   }
 
   // for the text button on accept and reject user
-  Widget twoButtonStatus(User user) {
+  Widget twoButtonStatus(UserModel user) {
     return SingleChildScrollView(
       child: Row(
         children: [
@@ -197,14 +197,14 @@ class _UserPageState extends State<UserPage> {
 
   // rest of the text buttons
   Widget singleButtonStatus(
-      User user, String type, String text, Color bg, Color textColor) {
+      UserModel user, String type, String text, Color bg, Color textColor) {
     return SingleChildScrollView(
         child: textButtonStyle(user, type, text, bg, textColor));
   }
 
   // the button that will appear depends on the contents of the array in the database
   // if the userid is not present in all the arrays, the default "Add User" will be prompted
-  Widget textButtonPerUser(User user, User mainUser) {
+  Widget textButtonPerUser(UserModel user, UserModel mainUser) {
     if (mainUser.receivedFriendRequests!.contains(user.id)) {
       return twoButtonStatus(user);
     } else if (mainUser.friends!.contains(user.id)) {

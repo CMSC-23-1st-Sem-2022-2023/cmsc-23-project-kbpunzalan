@@ -5,7 +5,7 @@ import '../api/firebase_user_api.dart';
 
 class UserProvider with ChangeNotifier {
   late FirebaseUserAPI firebaseService;
-  User? _selectedUser;
+  UserModel? _selectedUser;
 
   late Stream<QuerySnapshot> _userStream;
 
@@ -15,14 +15,14 @@ class UserProvider with ChangeNotifier {
   }
 
   Stream<QuerySnapshot> get users => _userStream;
-  User get selected => _selectedUser!;
+  UserModel get selected => _selectedUser!;
 
   fetchUsers() {
     _userStream = firebaseService.getAllUsers();
     notifyListeners();
   }
 
-  changeSelectedUser(User item) {
+  changeSelectedUser(UserModel item) {
     _selectedUser = item;
   }
 

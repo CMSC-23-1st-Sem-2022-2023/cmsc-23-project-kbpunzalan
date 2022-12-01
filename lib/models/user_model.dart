@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class User {
+class UserModel {
   String? id;
   String username;
   String name;
@@ -11,7 +11,7 @@ class User {
   List<dynamic>? sentFriendRequests;
 
   // user constructor
-  User({
+  UserModel({
     this.id,
     required this.username,
     required this.name,
@@ -23,8 +23,8 @@ class User {
   });
 
   // parse json to User
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
       id: json['id'],
       username: json['username'],
       name: json['name'],
@@ -36,13 +36,13 @@ class User {
     );
   }
 
-  static List<User> fromJsonArray(String jsonData) {
+  static List<UserModel> fromJsonArray(String jsonData) {
     final Iterable<dynamic> data = jsonDecode(jsonData);
-    return data.map<User>((dynamic d) => User.fromJson(d)).toList();
+    return data.map<UserModel>((dynamic d) => UserModel.fromJson(d)).toList();
   }
 
   // converts into a User
-  Map<String, dynamic> toJson(User user) {
+  Map<String, dynamic> toJson(UserModel user) {
     return {
       'username': user.username,
       'name': user.name,
