@@ -9,9 +9,9 @@ class TodoModal extends StatelessWidget {
   // int todoIndex;
   final todoFormKey = GlobalKey<FormState>();
 
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _deadlineController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _deadlineController = TextEditingController();
 
   TodoModal({
     super.key,
@@ -52,20 +52,34 @@ class TodoModal extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
+                child: TextFormField(
                   controller: _titleController,
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+                    labelText: "Enter Title",
+                    icon: Icon(Icons.description),
                   ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Title field cannot be empty!';
+                    }
+                    return null;
+                  },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
+                child: TextFormField(
                   controller: _descriptionController,
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+                    labelText: "Enter Description",
+                    icon: Icon(Icons.picture_in_picture_outlined),
                   ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Description field cannot be empty!';
+                    }
+                    return null;
+                  },
                 ),
               ),
               Padding(
@@ -75,7 +89,7 @@ class TodoModal extends StatelessWidget {
                       _deadlineController, //editing controller of this TextField
                   decoration: const InputDecoration(
                       icon: Icon(Icons.calendar_today), //icon of text field
-                      labelText: "Enter birthdate" //label text of field
+                      labelText: "Enter Deadline" //label text of field
                       ),
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
@@ -100,8 +114,8 @@ class TodoModal extends StatelessWidget {
                     }
                   },
                   validator: (value) {
-                    if (value == null) {
-                      return "Birthdate field cannot be empty!";
+                    if (value == "") {
+                      return "Deadline field cannot be empty!";
                     } else {
                       _deadlineController.text = value.toString();
                       return null;
@@ -123,29 +137,31 @@ class TodoModal extends StatelessWidget {
         switch (type) {
           case 'Add':
             {
-              Todo temp = Todo(
-                title: _titleController.text,
-                description: _descriptionController.text,
-                status: false,
-                deadline: _deadlineController.text,
-              );
+              if (todoFormKey.currentState!.validate()) {
+                // Navigator.of(context).pop();
+                Todo temp = Todo(
+                  title: _titleController.text,
+                  description: _descriptionController.text,
+                  status: false,
+                  deadline: _deadlineController.text,
+                );
 
-              context.read<TodoListProvider>().addTodo(temp);
+                context.read<TodoListProvider>().addTodo(temp);
 
-              // Remove dialog after adding
+                // Remove dialog after adding
+                Navigator.of(context).pop();
+              }
+              break;
+            }
+          case 'Edit':
+            {
+              context.read<TodoListProvider>().editTodo(_titleController.text,
+                  _descriptionController.text, _deadlineController.text);
+
+              // Remove dialog after editing
               Navigator.of(context).pop();
               break;
             }
-          // case 'Edit':
-          //   {
-          //     context
-          //         .read<TodoListProvider>()
-          //         .editTodo(todoIndex, _formFieldController.text);
-
-          //     // Remove dialog after editing
-          //     Navigator.of(context).pop();
-          //     break;
-          //   }
           case 'Delete':
             {
               context.read<TodoListProvider>().deleteTodo();

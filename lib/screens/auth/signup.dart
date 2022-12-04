@@ -174,7 +174,7 @@ class _SignupPageState extends State<SignupPage> {
         }
       },
       validator: (value) {
-        if (value == null) {
+        if (value == "") {
           return "Birthdate field cannot be empty!";
         } else {
           birthdateController.text = value.toString();

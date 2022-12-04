@@ -32,9 +32,12 @@ class TodoListProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void editTodo(int index, String newTitle) {
-    // _todoList[index].title = newTitle;
-    print("Edit");
+  void editTodo(
+      String newTitle, String newDescription, String newDeadline) async {
+    String message = await firebaseService.editTodo(
+        _selectedTodo!.id, newTitle, newDescription, newDeadline);
+
+    print(message);
     notifyListeners();
   }
 
@@ -44,9 +47,11 @@ class TodoListProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleStatus(int index, bool status) {
-    // _todoList[index].completed = status;
-    print("Toggle Status");
+  // toggles status to true or false so that the checkbox will be checked or unchecked
+  void toggleStatus(bool status) async {
+    String message =
+        await firebaseService.editStatus(_selectedTodo!.id, status);
+    print(message);
     notifyListeners();
   }
 }

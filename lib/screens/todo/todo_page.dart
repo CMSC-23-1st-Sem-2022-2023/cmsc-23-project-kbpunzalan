@@ -57,14 +57,16 @@ class _TodoPageState extends State<TodoPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: ListTile(
-                      title: Text(todo.title),
+                      title: Text("${todo.title} | ${todo.deadline}"),
                       subtitle: Text(todo.description),
                       leading: Checkbox(
                         value: todo.status,
                         onChanged: (bool? value) {
+                          // print("STATUS: $value");
                           context
                               .read<TodoListProvider>()
-                              .toggleStatus(index, value!);
+                              .changeSelectedTodo(todo);
+                          context.read<TodoListProvider>().toggleStatus(value!);
                         },
                       ),
                       trailing: Row(
@@ -72,13 +74,15 @@ class _TodoPageState extends State<TodoPage> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              // showDialog(
-                              //   context: context,
-                              //   builder: (BuildContext context) => TodoModal(
-                              //     type: 'Edit',
-                              //     todoIndex: index,
-                              //   ),
-                              // );
+                              context
+                                  .read<TodoListProvider>()
+                                  .changeSelectedTodo(todo);
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) => TodoModal(
+                                  type: 'Edit',
+                                ),
+                              );
                             },
                             icon: const Icon(Icons.create_outlined),
                           ),

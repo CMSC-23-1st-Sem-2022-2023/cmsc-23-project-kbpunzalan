@@ -62,4 +62,49 @@ class FirebaseTodoAPI {
       return "Failed with error '${e.code}: ${e.message}";
     }
   }
+
+  Future<String> editTodo(String? id, String newTitle, String newDescription,
+      String newDeadline) async {
+    User? user = auth.currentUser;
+
+    try {
+      // await db.collection("users").doc(id).collection("todos").doc(id).delete();
+      final editedData = {
+        'title': newTitle,
+        'description': newDescription,
+        'deadline': newDeadline
+      };
+
+      await db
+          .collection("users")
+          .doc(user?.uid)
+          .collection("todos")
+          .doc(id)
+          .update(editedData);
+
+      return "Successfully edited todo!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
+
+  Future<String> editStatus(String? id, bool status) async {
+    User? user = auth.currentUser;
+    print("STATUS: $status");
+
+    final editedData = {'status': status};
+
+    try {
+      await db
+          .collection("users")
+          .doc(user?.uid)
+          .collection("todos")
+          .doc(id)
+          .update(editedData);
+
+      return "Successfully edited status to $status!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
 }
