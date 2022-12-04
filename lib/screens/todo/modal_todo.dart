@@ -46,6 +46,14 @@ class TodoModal extends StatelessWidget {
         }
       // Edit and add will have input field in them
       default:
+        if (type == 'Edit') {
+          _titleController.text =
+              context.read<TodoListProvider>().selected.title;
+          _descriptionController.text =
+              context.read<TodoListProvider>().selected.description;
+          _deadlineController.text =
+              context.read<TodoListProvider>().selected.deadline;
+        }
         return Form(
           key: todoFormKey,
           child: Column(
@@ -53,6 +61,7 @@ class TodoModal extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  // initialValue: context.read<TodoListProvider>().selected.title ||,
                   controller: _titleController,
                   decoration: const InputDecoration(
                     labelText: "Enter Title",
@@ -155,13 +164,15 @@ class TodoModal extends StatelessWidget {
             }
           case 'Edit':
             {
-              context.read<TodoListProvider>().editTodo(_titleController.text,
-                  _descriptionController.text, _deadlineController.text);
+              if (todoFormKey.currentState!.validate()) {
+                context.read<TodoListProvider>().editTodo(_titleController.text,
+                    _descriptionController.text, _deadlineController.text);
 
-              // Remove dialog after editing
-              Navigator.of(context).pop();
-              break;
+                // Remove dialog after editing
+                Navigator.of(context).pop();
+              }
             }
+            break;
           case 'Delete':
             {
               context.read<TodoListProvider>().deleteTodo();

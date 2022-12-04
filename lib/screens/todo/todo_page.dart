@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
@@ -23,7 +25,7 @@ class _TodoPageState extends State<TodoPage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
-          title: Text("Todo"),
+          title: const Text("Todo"),
         ),
         body: StreamBuilder(
           stream: todosStream,
@@ -56,52 +58,75 @@ class _TodoPageState extends State<TodoPage> {
                   margin: const EdgeInsets.all(10.0),
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
-                    child: ListTile(
-                      title: Text("${todo.title} | ${todo.deadline}"),
-                      subtitle: Text(todo.description),
-                      leading: Checkbox(
-                        value: todo.status,
-                        onChanged: (bool? value) {
-                          // print("STATUS: $value");
-                          context
-                              .read<TodoListProvider>()
-                              .changeSelectedTodo(todo);
-                          context.read<TodoListProvider>().toggleStatus(value!);
-                        },
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              context
-                                  .read<TodoListProvider>()
-                                  .changeSelectedTodo(todo);
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => TodoModal(
-                                  type: 'Edit',
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ListTile(
+                            title: Text(todo.title),
+                            subtitle: Text(todo.description),
+                            leading: Checkbox(
+                              activeColor: Colors.black,
+                              checkColor: Colors.white,
+                              value: todo.status,
+                              onChanged: (bool? value) {
+                                // print("STATUS: $value");
+                                context
+                                    .read<TodoListProvider>()
+                                    .changeSelectedTodo(todo);
+                                context
+                                    .read<TodoListProvider>()
+                                    .toggleStatus(value!);
+                              },
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    context
+                                        .read<TodoListProvider>()
+                                        .changeSelectedTodo(todo);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          TodoModal(
+                                        type: 'Edit',
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.create_outlined),
                                 ),
-                              );
-                            },
-                            icon: const Icon(Icons.create_outlined),
+                                IconButton(
+                                  onPressed: () {
+                                    context
+                                        .read<TodoListProvider>()
+                                        .changeSelectedTodo(todo);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          TodoModal(
+                                        type: 'Delete',
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.delete_outlined),
+                                ),
+                                TextButton(
+                                    style: TextButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        textStyle:
+                                            const TextStyle(fontSize: 13),
+                                        backgroundColor: Colors.grey[900]),
+                                    child: const Text("View Todo"),
+                                    onPressed: () => viewTodo(todo)
+                                    // showDialog();
+
+                                    ),
+                              ],
+                            ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              context
-                                  .read<TodoListProvider>()
-                                  .changeSelectedTodo(todo);
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => TodoModal(
-                                  type: 'Delete',
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.delete_outlined),
-                          )
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -121,6 +146,65 @@ class _TodoPageState extends State<TodoPage> {
             );
           },
           child: const Icon(Icons.add_outlined),
+        ),
+      ),
+    );
+  }
+
+  viewTodo(Todo todo) {
+    showDialog(
+      context: context,
+      builder: (context) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: AlertDialog(
+          title: Text(
+            todo.title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Row(
+                  children: const [
+                    Icon(Icons.picture_in_picture_outlined),
+                    SizedBox(width: 10),
+                    Text(
+                      "Description",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Text(todo.description),
+                const SizedBox(height: 20),
+                Row(
+                  children: const [
+                    Icon(Icons.calendar_month),
+                    SizedBox(width: 10),
+                    Text(
+                      "Deadline",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Text(todo.deadline),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Close',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         ),
       ),
     );
