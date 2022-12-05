@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 // fake : for testing
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
@@ -135,12 +136,16 @@ class FirebaseAuthAPI {
             (error) => print("Failed to add user: $error"),
           );
 
+      final DateTime now = DateTime.now();
+      String formattedDate = DateFormat('yyyy-MM-dd').format(now); // fo
+      print(formattedDate); // something like 2013-04-20
+
       // add a new collection for the todo of each user with a sample todo
       final todo = {
         "title": "Sample todo",
         "description": "sample description",
         "status": false,
-        // "deadline": ,
+        "deadline": formattedDate,
         // "userId": uid,
       };
 

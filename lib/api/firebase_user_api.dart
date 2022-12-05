@@ -1,14 +1,18 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:week7_networking_discussion/models/user_model.dart';
 
 class FirebaseUserAPI {
   // maaaccess using db
   static final FirebaseFirestore db = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   // returns stream of query snapshots
   Stream<QuerySnapshot> getAllUsers() {
+    User? user = auth.currentUser;
+
     return db.collection("users").snapshots();
   }
 

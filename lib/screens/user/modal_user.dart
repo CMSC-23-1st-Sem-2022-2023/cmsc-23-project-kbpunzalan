@@ -40,31 +40,31 @@ class UserModal extends StatelessWidget {
       case 'Add Friend':
         {
           return Text(
-            "Add user '${context.read<UserProvider>().selected.name}'?",
+            "Add user '${context.read<UserProvider>().selected.username}'?",
           );
         }
       case 'Cancel Request':
         {
           return Text(
-            "Cancel request for '${context.read<UserProvider>().selected.name}'?",
+            "Cancel request for '${context.read<UserProvider>().selected.username}'?",
           );
         }
       case 'Confirm':
         {
           return Text(
-            "Add '${context.read<UserProvider>().selected.name}' to your friends list?",
+            "Add '${context.read<UserProvider>().selected.username}' to your friends list?",
           );
         }
       case 'Reject':
         {
           return Text(
-            "Remove '${context.read<UserProvider>().selected.name}' from your friend request?",
+            "Remove '${context.read<UserProvider>().selected.username}' from your friend request?",
           );
         }
       case 'Unfriend':
         {
           return Text(
-            "Remove '${context.read<UserProvider>().selected.name}' from your friends list?",
+            "Remove '${context.read<UserProvider>().selected.username}' from your friends list?",
           );
         }
       // Edit and add will have input field in them

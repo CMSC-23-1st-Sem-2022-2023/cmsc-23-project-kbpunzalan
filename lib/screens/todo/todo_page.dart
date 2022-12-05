@@ -1,10 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
-import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/screens/todo/modal_todo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -24,7 +22,7 @@ class _TodoPageState extends State<TodoPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.grey[900],
           title: const Text("Todo"),
         ),
         body: StreamBuilder(
@@ -44,90 +42,105 @@ class _TodoPageState extends State<TodoPage> {
               );
             }
             return ListView.builder(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(10.0),
               itemCount: snapshot.data?.docs.length,
               itemBuilder: ((context, index) {
                 Todo todo = Todo.fromJson(
                     snapshot.data?.docs[index].data() as Map<String, dynamic>);
                 return Card(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
                   color: Colors.grey[200],
                   shadowColor: Colors.grey[900],
                   margin: const EdgeInsets.all(10.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ListTile(
-                            title: Text(todo.title),
-                            subtitle: Text(todo.description),
-                            leading: Checkbox(
-                              activeColor: Colors.black,
-                              checkColor: Colors.white,
-                              value: todo.status,
-                              onChanged: (bool? value) {
-                                // print("STATUS: $value");
-                                context
-                                    .read<TodoListProvider>()
-                                    .changeSelectedTodo(todo);
-                                context
-                                    .read<TodoListProvider>()
-                                    .toggleStatus(value!);
-                              },
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    context
-                                        .read<TodoListProvider>()
-                                        .changeSelectedTodo(todo);
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          TodoModal(
-                                        type: 'Edit',
-                                      ),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.create_outlined),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    context
-                                        .read<TodoListProvider>()
-                                        .changeSelectedTodo(todo);
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          TodoModal(
-                                        type: 'Delete',
-                                      ),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.delete_outlined),
-                                ),
-                                TextButton(
-                                    style: TextButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        textStyle:
-                                            const TextStyle(fontSize: 13),
-                                        backgroundColor: Colors.grey[900]),
-                                    child: const Text("View Todo"),
-                                    onPressed: () => viewTodo(todo)
-                                    // showDialog();
-
-                                    ),
-                              ],
-                            ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        right: 0,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.open_in_new,
                           ),
+                          // iconSize: 15,
+                          color: Colors.grey,
+                          onPressed: () => viewTodo(todo),
                         ),
-                      ],
-                    ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 35),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: ListTile(
+                                title: Text(todo.title),
+                                subtitle: Text(todo.description),
+                                leading: Checkbox(
+                                  activeColor: Colors.grey[900],
+                                  checkColor: Colors.white,
+                                  value: todo.status,
+                                  onChanged: (bool? value) {
+                                    // print("STATUS: $value");
+                                    context
+                                        .read<TodoListProvider>()
+                                        .changeSelectedTodo(todo);
+                                    context
+                                        .read<TodoListProvider>()
+                                        .toggleStatus(value!);
+                                  },
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        context
+                                            .read<TodoListProvider>()
+                                            .changeSelectedTodo(todo);
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              TodoModal(
+                                            type: 'Edit',
+                                          ),
+                                        );
+                                      },
+                                      icon: const Icon(Icons.create_outlined),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        context
+                                            .read<TodoListProvider>()
+                                            .changeSelectedTodo(todo);
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              TodoModal(
+                                            type: 'Delete',
+                                          ),
+                                        );
+                                      },
+                                      icon: const Icon(Icons.delete_outlined),
+                                    ),
+
+                                    // TextButton(
+                                    //   style: TextButton.styleFrom(
+                                    //       foregroundColor: Colors.white,
+                                    //       textStyle:
+                                    //           const TextStyle(fontSize: 13),
+                                    //       backgroundColor: Colors.grey[900]),
+                                    //   child: const Text("View Todo"),
+                                    //   onPressed: () => viewTodo(todo),
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }),
@@ -135,7 +148,7 @@ class _TodoPageState extends State<TodoPage> {
           },
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.grey[900],
           // foregroundColor: Colors.grey,
           onPressed: () {
             showDialog(
@@ -152,57 +165,69 @@ class _TodoPageState extends State<TodoPage> {
   }
 
   viewTodo(Todo todo) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     showDialog(
       context: context,
       builder: (context) => BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: AlertDialog(
+          // Get available height and width of the build area of this widget. Make a choice depending on the size.
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
           title: Text(
             todo.title,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 25,
+              fontSize: 30,
             ),
           ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Row(
-                  children: const [
-                    Icon(Icons.picture_in_picture_outlined),
-                    SizedBox(width: 10),
-                    Text(
-                      "Description",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                Text(todo.description),
-                const SizedBox(height: 20),
-                Row(
-                  children: const [
-                    Icon(Icons.calendar_month),
-                    SizedBox(width: 10),
-                    Text(
-                      "Deadline",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                Text(todo.deadline),
-              ],
+          content: SizedBox(
+            height: height - 400,
+            width: width - 200,
+            child: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  Row(
+                    children: const [
+                      Icon(Icons.picture_in_picture_outlined),
+                      SizedBox(width: 10),
+                      Text(
+                        "Description",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Text(todo.description),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: const [
+                      Icon(Icons.calendar_month),
+                      SizedBox(width: 10),
+                      Text(
+                        "Deadline",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Text(todo.deadline),
+                ],
+              ),
             ),
           ),
           actions: <Widget>[
             TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               child: const Text(
                 'Close',
                 style:
                     TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
             ),
           ],
         ),

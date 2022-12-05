@@ -3,8 +3,10 @@ import 'dart:convert';
 class UserModel {
   String? id;
   String username;
-  String name;
-  String birthdate;
+  String firstName;
+  String lastName;
+  String email;
+  String birthdateInput;
   String location;
   List<dynamic>? friends;
   List<dynamic>? receivedFriendRequests;
@@ -14,8 +16,10 @@ class UserModel {
   UserModel({
     this.id,
     required this.username,
-    required this.name,
-    required this.birthdate,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.birthdateInput,
     required this.location,
     this.friends,
     this.receivedFriendRequests,
@@ -27,8 +31,10 @@ class UserModel {
     return UserModel(
       id: json['id'],
       username: json['username'],
-      name: json['name'],
-      birthdate: json['birthdate'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      email: json['email'],
+      birthdateInput: json['birthdateInput'],
       location: json['location'],
       friends: json['friends'],
       receivedFriendRequests: json['receivedFriendRequests'],
@@ -45,9 +51,11 @@ class UserModel {
   Map<String, dynamic> toJson(UserModel user) {
     return {
       'username': user.username,
-      'name': user.name,
+      'firstName': user.firstName,
+      'lastName': user.lastName,
+      'email': user.email,
       'friends': user.friends,
-      'birthdate': user.birthdate,
+      'birthdateInput': user.birthdateInput,
       'location': user.location,
       'receivedFriendRequests': user.receivedFriendRequests,
       'sentFriendRequests': user.sentFriendRequests,

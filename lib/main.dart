@@ -2,7 +2,7 @@
   Author: Kurt Brian Daine B. Punzalan
   Section: C4-L
   Date Created: November 21, 2022
-  Exercise Number: 7
+  Project
   Program Description: User Authentication and Automated Tests
 */
 
@@ -16,6 +16,7 @@ import 'package:week7_networking_discussion/screens/todo/todo_page.dart';
 import 'package:week7_networking_discussion/screens/auth/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'screens/pages/homepage.dart';
+import 'screens/pages/my_profile.dart';
 import 'firebase_options.dart';
 
 import 'package:week7_networking_discussion/providers/user_provider.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const AuthWrapper(),
         '/signup': (context) => const SignupPage(),
         '/login': (context) => const LoginPage(),
+        '/user-profile': (context) => const UserProfile(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

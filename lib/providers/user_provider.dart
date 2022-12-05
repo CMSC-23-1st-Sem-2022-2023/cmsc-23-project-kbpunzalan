@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:week7_networking_discussion/models/user_model.dart';
 import '../api/firebase_user_api.dart';
@@ -8,6 +9,7 @@ class UserProvider with ChangeNotifier {
   UserModel? _selectedUser;
 
   late Stream<QuerySnapshot> _userStream;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   UserProvider() {
     firebaseService = FirebaseUserAPI();
@@ -27,67 +29,77 @@ class UserProvider with ChangeNotifier {
   }
 
   void cancelRequest() async {
+    String mainUserId = auth.currentUser!.uid;
+
     String receivedFriendMessage =
         await firebaseService.removefromListChangeHandler(
-            _selectedUser!.id, "sampleid1", "sentFriendRequest", "removed");
+            _selectedUser!.id, mainUserId, "sentFriendRequests", "removed");
     print(receivedFriendMessage);
 
     String sentFriendMessage =
-        await firebaseService.removefromListChangeHandler("sampleid1",
-            _selectedUser!.id, "receivedFriendRequests", "removed");
+        await firebaseService.removefromListChangeHandler(
+            mainUserId, _selectedUser!.id, "receivedFriendRequests", "removed");
     print(sentFriendMessage);
 
     notifyListeners();
   }
 
   void addUser() async {
+    String mainUserId = auth.currentUser!.uid;
+
     String added1 = await firebaseService.addToListChangeHandler(
-        _selectedUser!.id, "sampleid1", "sentFriendRequest", "added");
+        _selectedUser!.id, mainUserId, "sentFriendRequests", "added");
     print(added1);
 
     String added2 = await firebaseService.addToListChangeHandler(
-        "sampleid1", _selectedUser!.id, "receivedFriendRequests", "added");
+        mainUserId, _selectedUser!.id, "receivedFriendRequests", "added");
     print(added2);
 
     notifyListeners();
   }
 
   void rejectUser() async {
+    String mainUserId = auth.currentUser!.uid;
+
     String receivedFriendMessage =
-        await firebaseService.removefromListChangeHandler(_selectedUser!.id,
-            "sampleid1", "receivedFriendRequests", "removed");
+        await firebaseService.removefromListChangeHandler(
+            _selectedUser!.id, mainUserId, "receivedFriendRequests", "removed");
     print(receivedFriendMessage);
 
     String sentFriendMessage =
         await firebaseService.removefromListChangeHandler(
-            "sampleid1", _selectedUser!.id, "sentFriendRequest", "removed");
+            mainUserId, _selectedUser!.id, "sentFriendRequests", "removed");
     print(sentFriendMessage);
 
     notifyListeners();
   }
 
   void acceptUser() async {
+    String mainUserId = auth.currentUser!.uid;
+
     String added1 = await firebaseService.addToListChangeHandler(
-        _selectedUser!.id, "sampleid1", "friends", "added");
+        _selectedUser!.id, mainUserId, "friends", "added");
     print(added1);
 
     String added2 = await firebaseService.addToListChangeHandler(
-        "sampleid1", _selectedUser!.id, "friends", "added");
+        mainUserId, _selectedUser!.id, "friends", "added");
     print(added2);
 
-    // remove from sentFriendRequest and receivedFriendRequests after adding to the friends list
+    // remove from sentFriendRequests and receivedFriendRequests after adding to the friends list
     rejectUser();
 
     notifyListeners();
   }
 
   void unfriendUser() async {
+    String mainUserId = auth.currentUser!.uid;
+
     String remove1 = await firebaseService.removefromListChangeHandler(
-        _selectedUser!.id, "sampleid1", "friends", "removed");
+        _selectedUser!.id, mainUserId, "friends", "removed");
     print(remove1);
 
     String remove2 = await firebaseService.removefromListChangeHandler(
-        "sampleid1", _selectedUser!.id, "friends", "removed");
+        mainUserId, _selectedUser!.id, "friends", "removed");
     print(remove2);
 
     notifyListeners();

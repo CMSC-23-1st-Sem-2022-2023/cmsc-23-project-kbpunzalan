@@ -53,7 +53,7 @@ class _FeedState extends State<Feed> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.black,
+          selectedItemColor: Colors.grey[900],
           onTap: _onItemTapped,
         ),
       ),

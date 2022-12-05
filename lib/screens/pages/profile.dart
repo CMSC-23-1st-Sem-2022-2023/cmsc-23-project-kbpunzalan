@@ -18,6 +18,22 @@ class UserProfileState extends State<UserProfile> {
         children: [
           ListTile(
             leading: const Icon(
+              Icons.person,
+              color: Colors.black,
+            ),
+            title: const Text(
+              'Profile',
+              style: TextStyle(fontSize: 18),
+            ),
+            onTap: () {
+              // print("Insert implementation");
+              Navigator.pushNamed(context, '/user-profile');
+
+              // Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(
               Icons.people_alt_sharp,
               color: Colors.black,
             ),

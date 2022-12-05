@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
@@ -22,11 +24,20 @@ class TodoModal extends StatelessWidget {
   Text _buildTitle() {
     switch (type) {
       case 'Add':
-        return const Text("Add new todo");
+        return const Text(
+          "Add new todo",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        );
       case 'Edit':
-        return const Text("Edit todo");
+        return const Text(
+          "Edit todo",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        );
       case 'Delete':
-        return const Text("Delete todo");
+        return const Text(
+          "Delete todo",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        );
       default:
         return const Text("");
     }
@@ -186,29 +197,43 @@ class TodoModal extends StatelessWidget {
       style: TextButton.styleFrom(
         textStyle: Theme.of(context).textTheme.labelLarge,
       ),
-      child: Text(type),
+      child: Text(
+        type,
+        style:
+            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: _buildTitle(),
-      content: _buildContent(context),
-
-      // Contains two buttons - add/edit/delete, and cancel
-      actions: <Widget>[
-        _dialogAction(context),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text("Cancel"),
-          style: TextButton.styleFrom(
-            textStyle: Theme.of(context).textTheme.labelLarge,
-          ),
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+      child: AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
         ),
-      ],
+        title: _buildTitle(),
+        content: _buildContent(context),
+
+        // Contains two buttons - add/edit/delete, and cancel
+        actions: <Widget>[
+          _dialogAction(context),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text(
+              "Cancel",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

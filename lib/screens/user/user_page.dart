@@ -87,11 +87,10 @@ class _UserPageState extends State<UserPage> {
                               otherUsers.username.toLowerCase().contains(
                                     searchFriend.text.toLowerCase(),
                                   )) {
-                            print("FIRST USER: ${mainUser.id}");
                             return Card(
                               child: ListTile(
                                 leading: const Icon(Icons.people),
-                                title: Text("${otherUsers.name}"),
+                                title: Text("${otherUsers.username}"),
                                 subtitle: SubstringHighlight(
                                   text: otherUsers.username,
                                   term: searchFriend.text,
@@ -215,6 +214,7 @@ class _UserPageState extends State<UserPage> {
           Colors.red.shade100, Colors.red.shade700);
     } else {
       // not in any list (user is not yet added)
+      print("FIRST USER: ${mainUser.id}");
       return singleButtonStatus(user, "Add Friend", "Add User",
           Colors.blue.shade100, Colors.blue.shade700);
     }
