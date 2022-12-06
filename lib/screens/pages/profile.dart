@@ -17,21 +17,15 @@ class UserProfileState extends State<UserProfile> {
       child: ListView(
         children: [
           ListTile(
-            leading: const Icon(
-              Icons.person,
-              color: Colors.black,
-            ),
-            title: const Text(
-              'Profile',
-              style: TextStyle(fontSize: 18),
-            ),
-            onTap: () {
-              // print("Insert implementation");
-              Navigator.pushNamed(context, '/user-profile');
-
-              // Navigator.pop(context);
-            },
-          ),
+              leading: const Icon(
+                Icons.person,
+                color: Colors.black,
+              ),
+              title: const Text(
+                'Profile',
+                style: TextStyle(fontSize: 18),
+              ),
+              onTap: () => Navigator.pushNamed(context, '/user-profile')),
           ListTile(
             leading: const Icon(
               Icons.people_alt_sharp,
@@ -41,10 +35,18 @@ class UserProfileState extends State<UserProfile> {
               'Friends',
               style: TextStyle(fontSize: 18),
             ),
-            onTap: () {
-              print("Insert implementation");
-              // Navigator.pop(context);
-            },
+            onTap: () => Navigator.pushNamed(context, '/friends'),
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.person_add_alt_sharp,
+              color: Colors.black,
+            ),
+            title: const Text(
+              'Friend Requests',
+              style: TextStyle(fontSize: 18),
+            ),
+            onTap: () => Navigator.pushNamed(context, '/friend-requests'),
           ),
           ListTile(
             leading: const Icon(

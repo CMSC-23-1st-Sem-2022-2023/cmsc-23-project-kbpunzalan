@@ -8,6 +8,7 @@ class UserModel {
   String email;
   String birthdateInput;
   String location;
+  String bio;
   List<dynamic>? friends;
   List<dynamic>? receivedFriendRequests;
   List<dynamic>? sentFriendRequests;
@@ -21,6 +22,7 @@ class UserModel {
     required this.email,
     required this.birthdateInput,
     required this.location,
+    required this.bio,
     this.friends,
     this.receivedFriendRequests,
     this.sentFriendRequests,
@@ -36,6 +38,7 @@ class UserModel {
       email: json['email'],
       birthdateInput: json['birthdateInput'],
       location: json['location'],
+      bio: json['bio'],
       friends: json['friends'],
       receivedFriendRequests: json['receivedFriendRequests'],
       sentFriendRequests: json['sentFriendRequests'],
@@ -57,6 +60,7 @@ class UserModel {
       'friends': user.friends,
       'birthdateInput': user.birthdateInput,
       'location': user.location,
+      'bio': user.bio,
       'receivedFriendRequests': user.receivedFriendRequests,
       'sentFriendRequests': user.sentFriendRequests,
     };

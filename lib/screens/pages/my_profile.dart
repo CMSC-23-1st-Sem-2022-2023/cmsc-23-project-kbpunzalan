@@ -22,6 +22,10 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  final formKey = GlobalKey<FormState>();
+
+  final TextEditingController _bioController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -120,30 +124,35 @@ class _UserProfileState extends State<UserProfile> {
                                       child: Row(
                                         children: <Widget>[
                                           Expanded(
-                                            child: Column(
-                                              children: <Widget>[
-                                                Text(
-                                                  "Friends",
-                                                  style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        33, 33, 33, 1),
-                                                    fontSize: 22.0,
-                                                    fontWeight: FontWeight.bold,
+                                            child: GestureDetector(
+                                              onTap: () => Navigator.pushNamed(
+                                                  context, '/friends'),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Text(
+                                                    "Friends",
+                                                    style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          33, 33, 33, 1),
+                                                      fontSize: 22.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  height: 5.0,
-                                                ),
-                                                Text(
-                                                  user.friends!.length
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    fontSize: 20.0,
-                                                    color: Color.fromRGBO(
-                                                        33, 33, 33, 1),
+                                                  SizedBox(
+                                                    height: 5.0,
                                                   ),
-                                                )
-                                              ],
+                                                  Text(
+                                                    user.friends!.length
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 20.0,
+                                                      color: Color.fromRGBO(
+                                                          33, 33, 33, 1),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           Expanded(
@@ -206,43 +215,40 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                             ),
                           )),
-                      Container(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 30.0, horizontal: 16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const <Widget>[
-                              Text(
-                                'Bio',
-                                // textAlign: TextAlign.right,
-                                style: TextStyle(
-                                  fontSize: 30.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(33, 33, 33, 1),
-                                  letterSpacing: 1.0,
-                                  height: 1.7,
-                                ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 30.0, horizontal: 16.0),
+                        child: Column(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const Text(
+                              'Bio',
+                              // textAlign: TextAlign.right,
+                              style: TextStyle(
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(33, 33, 33, 1),
+                                letterSpacing: 1.0,
+                                height: 1.7,
                               ),
-                              SizedBox(
-                                height: 10.0,
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            Text(
+                              user.bio,
+                              // textAlign: TextAlign.right,
+                              style: const TextStyle(
+                                // fontSize: 12.0,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w300,
+                                color: Color.fromRGBO(33, 33, 33, 1),
+                                letterSpacing: 1.0,
+                                height: 1.7,
                               ),
-                              Text(
-                                'My name is Alice and I am  a freelance mobile app developper.\n'
-                                'if you need any mobile app for your company then contact me for more informations',
-                                // textAlign: TextAlign.right,
-                                style: TextStyle(
-                                  // fontSize: 12.0,
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color.fromRGBO(33, 33, 33, 1),
-                                  letterSpacing: 1.0,
-                                  height: 1.7,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(
@@ -255,7 +261,7 @@ class _UserProfileState extends State<UserProfile> {
                             textStyle: const TextStyle(fontSize: 20),
                             backgroundColor: Colors.grey[900]),
                         child: const Text("Update Bio"),
-                        onPressed: () => {},
+                        onPressed: () => updateBio(user),
                       )
                     ],
                   ),
@@ -300,6 +306,76 @@ class _UserProfileState extends State<UserProfile> {
                 style: TextStyle(
                     color: Color.fromRGBO(33, 33, 33, 1),
                     fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  updateBio(UserModel user) {
+    _bioController.text = user.bio;
+
+    showDialog(
+      context: context,
+      builder: (context) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: AlertDialog(
+          // Get available height and width of the build area of this widget. Make a choice depending on the size.
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          title: const Text(
+            "Update Bio",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+            ),
+          ),
+          content: Form(
+            key: formKey,
+            child: TextFormField(
+              controller: _bioController,
+              decoration: const InputDecoration(
+                labelText: "Enter Bio",
+                // icon: Icon(Icons.person),
+              ),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Bio field cannot be empty!';
+                }
+                return null;
+              },
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  context
+                      .read<UserProvider>()
+                      .changeUserBio(_bioController.text);
+
+                  // Remove dialog after editing user bio
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text(
+                'Update Bio',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Close',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
           ],

@@ -10,6 +10,7 @@ class FirebaseUserAPI {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   // returns stream of query snapshots
+
   Stream<QuerySnapshot> getAllUsers() {
     User? user = auth.currentUser;
 
@@ -36,5 +37,13 @@ class FirebaseUserAPI {
     });
 
     return "Successfully $message $id from $list of $firstUser";
+  }
+
+  // sampleid1 is still a placeholder (since it is the first user)
+  Future<String> changeUserBio(String? id, String bio) async {
+    var collection = FirebaseFirestore.instance.collection('users');
+    await collection.doc(id).update({'bio': bio});
+
+    return "Successfully edited bio of $id";
   }
 }

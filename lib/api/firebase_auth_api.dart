@@ -126,6 +126,8 @@ class FirebaseAuthAPI {
         "sentFriendRequests": [],
         "receivedFriendRequests": [],
         "friends": [],
+        "bio": // sample bio
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae",
       };
       await db
           .collection("users")

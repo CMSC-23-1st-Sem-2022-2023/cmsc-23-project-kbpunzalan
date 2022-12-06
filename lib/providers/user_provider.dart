@@ -104,4 +104,11 @@ class UserProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void changeUserBio(String bio) async {
+    String mainUserId = auth.currentUser!.uid;
+
+    String changedBio = await firebaseService.changeUserBio(mainUserId, bio);
+    print(changedBio);
+  }
 }

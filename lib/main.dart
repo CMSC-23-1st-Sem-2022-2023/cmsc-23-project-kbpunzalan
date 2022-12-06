@@ -12,6 +12,8 @@ import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/screens/pages/feed.dart';
 import 'package:week7_networking_discussion/screens/auth/signup.dart';
+import 'package:week7_networking_discussion/screens/pages/friend_requests.dart';
+import 'package:week7_networking_discussion/screens/pages/friends.dart';
 import 'package:week7_networking_discussion/screens/todo/todo_page.dart';
 import 'package:week7_networking_discussion/screens/auth/login.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -54,6 +56,8 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignupPage(),
         '/login': (context) => const LoginPage(),
         '/user-profile': (context) => const UserProfile(),
+        '/friends': (context) => const FriendsPage(),
+        '/friend-requests': (context) => const FriendsRequests(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
