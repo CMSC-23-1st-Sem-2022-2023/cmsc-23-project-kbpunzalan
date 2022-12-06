@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:provider/provider.dart';
@@ -5,6 +6,8 @@ import 'package:week7_networking_discussion/models/todo_model.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/screens/todo/modal_todo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../providers/auth_provider.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
@@ -17,8 +20,11 @@ class _TodoPageState extends State<TodoPage> {
   @override
   Widget build(BuildContext context) {
     // access the list of todos in the provider
+    User? user = context.read<AuthProvider>().user;
+
     Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
 
+    print("III: ${user?.uid}");
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

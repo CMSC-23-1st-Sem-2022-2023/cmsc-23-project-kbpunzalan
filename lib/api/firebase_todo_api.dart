@@ -38,11 +38,11 @@ class FirebaseTodoAPI {
     User? user = auth.currentUser;
 
     print("USER ID: ${user?.uid}");
-    return db
-        .collection("users")
-        .doc(user?.uid)
-        .collection("todos")
-        .snapshots();
+
+    var snap =
+        db.collection("users").doc(user?.uid).collection("todos").snapshots();
+    print(snap);
+    return snap;
   }
 
   Future<String> deleteTodo(String? id) async {

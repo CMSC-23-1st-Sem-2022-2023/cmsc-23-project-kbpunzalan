@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:week7_networking_discussion/api/firebase_todo_api.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
@@ -7,6 +8,7 @@ class TodoListProvider with ChangeNotifier {
   late FirebaseTodoAPI firebaseService;
   late Stream<QuerySnapshot> _todosStream;
   Todo? _selectedTodo;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   TodoListProvider() {
     firebaseService = FirebaseTodoAPI();

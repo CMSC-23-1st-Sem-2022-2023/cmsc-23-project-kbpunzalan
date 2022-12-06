@@ -242,7 +242,6 @@ class _UserProfileState extends State<UserProfile> {
                               style: const TextStyle(
                                 // fontSize: 12.0,
                                 fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w300,
                                 color: Color.fromRGBO(33, 33, 33, 1),
                                 letterSpacing: 1.0,
                                 height: 1.7,

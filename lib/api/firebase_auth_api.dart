@@ -24,7 +24,7 @@ class FirebaseAuthAPI {
   // get the auth state changes
   // auth state change: notifies about changes from the user sign in stage
   // if user is signed in or signed out
-  // returns streram of data of type user
+  // returns stream of data of type user
   Stream<User?> getUser() {
     return auth.authStateChanges();
   }

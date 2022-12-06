@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
+
+import '../../providers/todo_provider.dart';
 // import '../../providers/auth_provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -50,10 +53,6 @@ class _LoginPageState extends State<LoginPage> {
         if (value!.length < 8) {
           return 'Password field must be at least 8 characters long!';
         }
-
-        // if (message == "") {
-        //   return "Password cannot be empty";
-        // }
 
         if (message == "Wrong password provided for that user.") {
           return "Wrong password provided for that user.";
