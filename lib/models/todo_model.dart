@@ -6,6 +6,8 @@ class Todo {
   bool status;
   String deadline;
   String? id;
+  String? lastEditedBy;
+  String? lastEditedDate;
   // final int userId;
 
   Todo({
@@ -15,6 +17,8 @@ class Todo {
     required this.status,
     required this.deadline,
     this.id,
+    this.lastEditedBy,
+    this.lastEditedDate,
   });
 
   // Factory constructor to instantiate object from json format
@@ -25,6 +29,8 @@ class Todo {
       status: json['status'],
       deadline: json['deadline'],
       id: json['id'],
+      lastEditedBy: json['lastEditedBy'],
+      lastEditedDate: json['lastEditedDate'],
       // userId: json['userId'],
     );
   }
@@ -40,6 +46,8 @@ class Todo {
       'description': todo.description,
       'status': todo.status,
       'deadline': todo.deadline,
+      'lastEditedDate': todo.lastEditedDate,
+      'lastEditedBy': todo.lastEditedBy,
       // 'userId': todo.userId,
     };
   }
