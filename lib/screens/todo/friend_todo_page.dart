@@ -32,6 +32,10 @@ class _FriendTodoPageState extends State<FriendTodoPage> {
 
     print("ARGUMENT USER SELECTED ${arguments['selectedUser'].firstName}");
 
+    context
+        .read<TodoListProvider>()
+        .changeSelectedUser(arguments['selectedUser'].id);
+
     //  db.collection("users").doc(user?.uid).collection("todos").snapshots();
 
     print("III: ${user?.uid}");
@@ -87,20 +91,6 @@ class _FriendTodoPageState extends State<FriendTodoPage> {
                                 child: ListTile(
                                   title: Text(todo.title),
                                   subtitle: Text(todo.description),
-                                  leading: Checkbox(
-                                    activeColor: Colors.grey[900],
-                                    checkColor: Colors.white,
-                                    value: todo.status,
-                                    onChanged: (bool? value) {
-                                      // print("STATUS: $value");
-                                      context
-                                          .read<TodoListProvider>()
-                                          .changeSelectedTodo(todo);
-                                      context
-                                          .read<TodoListProvider>()
-                                          .toggleStatus(value!);
-                                    },
-                                  ),
                                   trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -113,7 +103,7 @@ class _FriendTodoPageState extends State<FriendTodoPage> {
                                             context: context,
                                             builder: (BuildContext context) =>
                                                 TodoModal(
-                                              type: 'Edit',
+                                              type: 'Edit Friend',
                                             ),
                                           );
                                         },

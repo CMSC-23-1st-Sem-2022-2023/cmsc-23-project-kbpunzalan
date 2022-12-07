@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:week7_networking_discussion/api/firebase_todo_api.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:week7_networking_discussion/models/user_model.dart';
 
 class TodoListProvider with ChangeNotifier {
   late FirebaseTodoAPI firebaseService;
   late Stream<QuerySnapshot> _todosStream;
   Todo? _selectedTodo;
+  String? _selectedUser;
+
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   TodoListProvider() {
@@ -18,9 +21,16 @@ class TodoListProvider with ChangeNotifier {
   // getter
   Stream<QuerySnapshot> get todos => _todosStream;
   Todo get selected => _selectedTodo!;
+  String get selectedUser => _selectedUser!;
 
   changeSelectedTodo(Todo item) {
     _selectedTodo = item;
+  }
+
+  changeSelectedUser(String item) {
+    _selectedUser = item;
+
+    print("CHANGE SELECTED USER : $selectedUser");
   }
 
   void fetchTodos() {
@@ -38,6 +48,15 @@ class TodoListProvider with ChangeNotifier {
       String newTitle, String newDescription, String newDeadline) async {
     String message = await firebaseService.editTodo(
         _selectedTodo!.id, newTitle, newDescription, newDeadline);
+
+    print(message);
+    notifyListeners();
+  }
+
+  void editFriendTodo(
+      String newTitle, String newDescription, String newDeadline) async {
+    String message = await firebaseService.editFriendTodo(
+        selectedUser, _selectedTodo!.id, newTitle, newDescription, newDeadline);
 
     print(message);
     notifyListeners();

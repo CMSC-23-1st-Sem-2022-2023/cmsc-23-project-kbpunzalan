@@ -33,6 +33,11 @@ class TodoModal extends StatelessWidget {
           "Edit todo",
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         );
+      case 'Edit Friend':
+        return const Text(
+          "Edit Friend's Todo",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        );
       case 'Delete':
         return const Text(
           "Delete todo",
@@ -57,7 +62,7 @@ class TodoModal extends StatelessWidget {
         }
       // Edit and add will have input field in them
       default:
-        if (type == 'Edit') {
+        if (type == 'Edit' || type == 'Edit Friend') {
           _titleController.text =
               context.read<TodoListProvider>().selected.title;
           _descriptionController.text =
@@ -178,6 +183,19 @@ class TodoModal extends StatelessWidget {
               if (todoFormKey.currentState!.validate()) {
                 context.read<TodoListProvider>().editTodo(_titleController.text,
                     _descriptionController.text, _deadlineController.text);
+
+                // Remove dialog after editing
+                Navigator.of(context).pop();
+              }
+              break;
+            }
+          case 'Edit Friend':
+            {
+              if (todoFormKey.currentState!.validate()) {
+                context.read<TodoListProvider>().editFriendTodo(
+                    _titleController.text,
+                    _descriptionController.text,
+                    _deadlineController.text);
 
                 // Remove dialog after editing
                 Navigator.of(context).pop();

@@ -45,6 +45,12 @@ class FirebaseTodoAPI {
     return snap;
   }
 
+  Stream<QuerySnapshot> getFriendAllTodos(String id) {
+    var snap = db.collection("users").doc(id).collection("todos").snapshots();
+    print(snap);
+    return snap;
+  }
+
   Future<String> deleteTodo(String? id) async {
     User? user = auth.currentUser;
 
@@ -78,6 +84,29 @@ class FirebaseTodoAPI {
       await db
           .collection("users")
           .doc(user?.uid)
+          .collection("todos")
+          .doc(id)
+          .update(editedData);
+
+      return "Successfully edited todo!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
+
+  Future<String> editFriendTodo(String selectedUserId, String? id,
+      String newTitle, String newDescription, String newDeadline) async {
+    try {
+      // await db.collection("users").doc(id).collection("todos").doc(id).delete();
+      final editedData = {
+        'title': newTitle,
+        'description': newDescription,
+        'deadline': newDeadline
+      };
+
+      await db
+          .collection("users")
+          .doc(selectedUserId)
           .collection("todos")
           .doc(id)
           .update(editedData);
