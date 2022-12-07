@@ -22,11 +22,13 @@ class _FriendTodoPageState extends State<FriendTodoPage> {
     // access the list of todos in the provider
     User? user = context.read<AuthProvider>().user;
 
-    Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
+    // Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
 
     // extract arguments
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
+
+    final FirebaseFirestore db = FirebaseFirestore.instance;
 
     print("ARGUMENT USER SELECTED ${arguments['selectedUser'].firstName}");
 
@@ -41,7 +43,11 @@ class _FriendTodoPageState extends State<FriendTodoPage> {
               "Todo List of ${arguments['selectedUser'].firstName} ${arguments['selectedUser'].lastName}"),
         ),
         body: StreamBuilder(
-          stream: todosStream,
+          stream: db
+              .collection("users")
+              .doc(arguments['selectedUser'].id)
+              .collection("todos")
+              .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Center(
