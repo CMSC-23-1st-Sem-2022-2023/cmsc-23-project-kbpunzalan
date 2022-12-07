@@ -147,6 +147,7 @@ class _FriendsPageState extends State<FriendsPage> {
       UserModel user, String type, String text1, Color color, Color color2) {
     return TextButton(
       onPressed: () {
+        print("MY USER NAME ${context.read<UserProvider>().selected.username}");
         context.read<UserProvider>().changeSelectedUser(user);
         showDialog(
           context: context,
@@ -287,6 +288,28 @@ class _FriendsPageState extends State<FriendsPage> {
                 container("Birthdate", user.birthdateInput),
                 container("Location", user.location),
                 container("Bio", user.bio),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: TextButton(
+                      style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(20),
+                          foregroundColor: Colors.white,
+                          textStyle: const TextStyle(fontSize: 20),
+                          backgroundColor: Colors.grey[900]),
+                      child: const Text("View Todo List"),
+                      onPressed: () {
+                        context.read<UserProvider>().changeSelectedUser(user);
+                        var selectedUser =
+                            context.read<UserProvider>().selected;
+                        print("MY USER NAME $selectedUser");
+                        // context.read<UserProvider>().changeSelectedUser(user);
+                        Navigator.pushNamed(context, '/friend-todos',
+                            arguments: {'selectedUser': selectedUser});
+                      }),
+                ),
                 SizedBox(
                   height: 20.0,
                 ),
