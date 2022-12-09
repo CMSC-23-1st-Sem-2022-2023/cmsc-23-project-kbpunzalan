@@ -17,8 +17,8 @@ class Todo {
     required this.status,
     required this.deadline,
     this.id,
-    this.lastEditedBy,
-    this.lastEditedDate,
+    required this.lastEditedBy,
+    required this.lastEditedDate,
   });
 
   // Factory constructor to instantiate object from json format

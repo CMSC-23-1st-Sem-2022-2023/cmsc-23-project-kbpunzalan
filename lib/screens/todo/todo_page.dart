@@ -201,6 +201,20 @@ class _TodoPageState extends State<TodoPage> {
                     ],
                   ),
                   Text(todo.deadline),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: const [
+                      Icon(Icons.edit_calendar_rounded),
+                      SizedBox(width: 10),
+                      Text(
+                        "Last Modified",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Text("${todo.lastEditedBy}"),
+                  Text("${todo.lastEditedDate}"),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),

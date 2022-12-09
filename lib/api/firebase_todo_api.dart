@@ -78,7 +78,9 @@ class FirebaseTodoAPI {
       final editedData = {
         'title': newTitle,
         'description': newDescription,
-        'deadline': newDeadline
+        'deadline': newDeadline,
+        "lastEditedBy": "${user?.displayName}",
+        "lastEditedDate": DateTime.now().toString(),
       };
 
       await db
@@ -96,12 +98,16 @@ class FirebaseTodoAPI {
 
   Future<String> editFriendTodo(String selectedUserId, String? id,
       String newTitle, String newDescription, String newDeadline) async {
+    User? user = auth.currentUser;
+
     try {
       // await db.collection("users").doc(id).collection("todos").doc(id).delete();
       final editedData = {
         'title': newTitle,
         'description': newDescription,
-        'deadline': newDeadline
+        'deadline': newDeadline,
+        "lastEditedBy": "${user?.displayName}",
+        "lastEditedDate": DateTime.now().toString(),
       };
 
       await db

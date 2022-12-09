@@ -1,10 +1,13 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:intl/intl.dart';
+
+import '../../providers/auth_provider.dart';
 
 class TodoModal extends StatelessWidget {
   String type;
@@ -162,6 +165,8 @@ class TodoModal extends StatelessWidget {
         switch (type) {
           case 'Add':
             {
+              User? user = context.read<AuthProvider>().user;
+
               if (todoFormKey.currentState!.validate()) {
                 // Navigator.of(context).pop();
                 Todo temp = Todo(
@@ -169,6 +174,8 @@ class TodoModal extends StatelessWidget {
                   description: _descriptionController.text,
                   status: false,
                   deadline: _deadlineController.text,
+                  lastEditedBy: "${user?.displayName}",
+                  lastEditedDate: DateTime.now().toString(),
                 );
 
                 context.read<TodoListProvider>().addTodo(temp);

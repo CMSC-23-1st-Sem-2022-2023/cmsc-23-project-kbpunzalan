@@ -82,6 +82,9 @@ class FirebaseAuthAPI {
         saveUserToFirestore(credential.user?.uid, firstName, lastName, username,
             birthdate, location, email);
 
+        await FirebaseAuth.instance.currentUser!
+            .updateDisplayName("$firstName $lastName");
+
         return "";
       }
     } on FirebaseAuthException catch (e) {
@@ -150,8 +153,8 @@ class FirebaseAuthAPI {
         "description": "sample description",
         "status": false,
         "deadline": formattedDate,
-        "lastEditedBy": "${firstName} ${lastName}",
-        "lastEditedDate": formattedDate,
+        "lastEditedBy": "$firstName $lastName",
+        "lastEditedDate": now,
         // "userId": uid,
       };
 
