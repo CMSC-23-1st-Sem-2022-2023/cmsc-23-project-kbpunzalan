@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
 import '../todo/todo_page.dart';
 import 'profile.dart';
 import '../user/user_page.dart';
@@ -11,9 +14,14 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
   static const List<Widget> _widgetOptions = <Widget>[
     TodoPage(),
     UserPage(),

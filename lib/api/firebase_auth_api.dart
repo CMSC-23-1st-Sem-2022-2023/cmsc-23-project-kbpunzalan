@@ -154,7 +154,7 @@ class FirebaseAuthAPI {
         "status": false,
         "deadline": formattedDate,
         "lastEditedBy": "$firstName $lastName",
-        "lastEditedDate": now,
+        "lastEditedDate": now.toString(),
         // "userId": uid,
       };
 

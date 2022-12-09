@@ -41,7 +41,7 @@ class FirebaseTodoAPI {
 
     var snap =
         db.collection("users").doc(user?.uid).collection("todos").snapshots();
-    print(snap);
+    print("SNAP: $snap");
     return snap;
   }
 

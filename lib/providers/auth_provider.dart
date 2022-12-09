@@ -47,4 +47,8 @@ class AuthProvider with ChangeNotifier {
     return authService.signUp(
         firstName, lastName, username, birthdate, location, email, password);
   }
+
+  getMainUser(User user) {
+    userObj = user;
+  }
 }

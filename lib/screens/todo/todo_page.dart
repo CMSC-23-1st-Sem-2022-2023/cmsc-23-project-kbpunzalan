@@ -24,6 +24,8 @@ class _TodoPageState extends State<TodoPage> {
 
     Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
 
+    print("STREAM: $todosStream");
+
     print("III: ${user?.uid}");
     return SafeArea(
       child: Scaffold(
@@ -84,6 +86,9 @@ class _TodoPageState extends State<TodoPage> {
                                       context
                                           .read<TodoListProvider>()
                                           .toggleStatus(value!);
+                                      TodoModal(
+                                        type: 'Edit',
+                                      );
                                     },
                                   ),
                                   trailing: Row(
