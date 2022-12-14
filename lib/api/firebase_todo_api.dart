@@ -3,30 +3,31 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseTodoAPI {
-  static final FirebaseFirestore db = FirebaseFirestore.instance;
+  // static final FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
-  // final db = FakeFirebaseFirestore();
+
+  final db = FakeFirebaseFirestore();
 
   Future<String> addTodo(Map<String, dynamic> todo) async {
     User? user = auth.currentUser;
 
     try {
-      final docRef = await db
-          .collection("users")
-          .doc(user?.uid)
-          .collection("todos")
-          .add(todo);
+      // final docRef = await db
+      //     .collection("users")
+      //     .doc(user?.uid)
+      //     .collection("todos")
+      //     .add(todo);
 
-      // add its id
-      await db
-          .collection("users")
-          .doc(user?.uid)
-          .collection("todos")
-          .doc(docRef.id)
-          .update({"id": docRef.id});
+      // // add its id
+      // await db
+      //     .collection("users")
+      //     .doc(user?.uid)
+      //     .collection("todos")
+      //     .doc(docRef.id)
+      //     .update({"id": docRef.id});
 
-      // final docRef = await db.collection("todos").add(todo);
-      // await db.collection("todos").doc(docRef.id).update({'id': docRef.id});
+      final docRef = await db.collection("todos").add(todo);
+      await db.collection("todos").doc(docRef.id).update({'id': docRef.id});
 
       return "Successfully added todo!";
     } on FirebaseException catch (e) {
@@ -34,6 +35,7 @@ class FirebaseTodoAPI {
     }
   }
 
+  // get all todos of the current logged in user
   Stream<QuerySnapshot> getAllTodos() {
     User? user = auth.currentUser;
 
@@ -45,12 +47,14 @@ class FirebaseTodoAPI {
     return snap;
   }
 
+  // get all todos of a specific friend
   Stream<QuerySnapshot> getFriendAllTodos(String id) {
     var snap = db.collection("users").doc(id).collection("todos").snapshots();
     print(snap);
     return snap;
   }
 
+  // delete a selected todo
   Future<String> deleteTodo(String? id) async {
     User? user = auth.currentUser;
 
@@ -69,6 +73,7 @@ class FirebaseTodoAPI {
     }
   }
 
+  // edit selected to do and modify last edited by and last edited date
   Future<String> editTodo(String? id, String newTitle, String newDescription,
       String newDeadline) async {
     User? user = auth.currentUser;
@@ -96,6 +101,7 @@ class FirebaseTodoAPI {
     }
   }
 
+  // a user can edit todo of their friends
   Future<String> editFriendTodo(String selectedUserId, String? id,
       String newTitle, String newDescription, String newDeadline) async {
     User? user = auth.currentUser;
@@ -123,6 +129,7 @@ class FirebaseTodoAPI {
     }
   }
 
+  // main user onlu can edit the status of the todo
   Future<String> editStatus(String? id, bool status) async {
     User? user = auth.currentUser;
     print("STATUS: $status");

@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
     final loginButton = Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextButton(
-        key: const Key('loginUpButton'),
+        key: const Key('loginButton'),
         style: TextButton.styleFrom(
             backgroundColor: Colors.black,
             padding: const EdgeInsets.all(16.0),

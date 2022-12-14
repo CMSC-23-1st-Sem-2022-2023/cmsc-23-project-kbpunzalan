@@ -17,7 +17,7 @@ class FirebaseUserAPI {
     return db.collection("users").snapshots();
   }
 
-  // sampleid1 is still a placeholder (since it is the first user)
+  // remove id from the list
   Future<String> removefromListChangeHandler(
       String? id, String? firstUser, String list, String message) async {
     var collection = FirebaseFirestore.instance.collection('users');
@@ -28,7 +28,7 @@ class FirebaseUserAPI {
     return "Successfully $message $id from $list of $firstUser";
   }
 
-  // sampleid1 is still a placeholder (since it is the first user)
+  // add user id to the list
   Future<String> addToListChangeHandler(
       String? id, String? firstUser, String list, String message) async {
     var collection = FirebaseFirestore.instance.collection('users');
@@ -39,7 +39,7 @@ class FirebaseUserAPI {
     return "Successfully $message $id from $list of $firstUser";
   }
 
-  // sampleid1 is still a placeholder (since it is the first user)
+  // change the bio of the currently logged in user (in the profile)
   Future<String> changeUserBio(String? id, String bio) async {
     var collection = FirebaseFirestore.instance.collection('users');
     await collection.doc(id).update({'bio': bio});

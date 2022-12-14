@@ -146,6 +146,8 @@ class _SignupPageState extends State<SignupPage> {
     );
 
     final birthdateInput = TextFormField(
+      key: Key("birthdateField"),
+
       controller: birthdateController, //editing controller of this TextField
       decoration: const InputDecoration(
           icon: Icon(Icons.calendar_today), //icon of text field
@@ -184,6 +186,7 @@ class _SignupPageState extends State<SignupPage> {
     );
 
     final password = TextFormField(
+      key: Key("pwField"),
       controller: passwordController,
       obscureText: true,
       decoration: const InputDecoration(
@@ -191,7 +194,7 @@ class _SignupPageState extends State<SignupPage> {
         hintText: 'Password',
       ),
       validator: (value) {
-        // requirement is at least 6 characters
+        // requirement is at least 8 characters
         if (value!.length < 8) {
           return 'Password must be at least 8 characters long!';
         }
@@ -224,6 +227,7 @@ class _SignupPageState extends State<SignupPage> {
     );
 
     final signupButton = TextButton(
+      key: Key("signUpButton"),
       style: TextButton.styleFrom(
           backgroundColor: Colors.black,
           padding: const EdgeInsets.all(16.0),

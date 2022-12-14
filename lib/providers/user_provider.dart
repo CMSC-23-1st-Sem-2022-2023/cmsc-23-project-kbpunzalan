@@ -28,6 +28,7 @@ class UserProvider with ChangeNotifier {
     _selectedUser = item;
   }
 
+  // cancel the request of the main yser
   void cancelRequest() async {
     String mainUserId = auth.currentUser!.uid;
 
@@ -44,6 +45,7 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // add a user
   void addUser() async {
     String mainUserId = auth.currentUser!.uid;
 
@@ -58,6 +60,7 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // reject a user
   void rejectUser() async {
     String mainUserId = auth.currentUser!.uid;
 
@@ -74,6 +77,7 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // be friends with the user
   void acceptUser() async {
     String mainUserId = auth.currentUser!.uid;
 
@@ -91,6 +95,7 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // unfriend a user
   void unfriendUser() async {
     String mainUserId = auth.currentUser!.uid;
 
@@ -105,6 +110,7 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // update the bio of the currently logged in user
   void changeUserBio(String bio) async {
     String mainUserId = auth.currentUser!.uid;
 

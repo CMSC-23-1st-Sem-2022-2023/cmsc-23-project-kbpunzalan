@@ -22,6 +22,7 @@ class _FeedState extends State<Feed> {
 
   int _selectedIndex = 0;
 
+  // pages to choose from
   static const List<Widget> _widgetOptions = <Widget>[
     TodoPage(),
     UserPage(),

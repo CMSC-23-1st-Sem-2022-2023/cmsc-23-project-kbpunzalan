@@ -93,7 +93,7 @@ class _FriendsRequestsState extends State<FriendsRequests> {
                                 snapshot.data?.docs[index].data()
                                     as Map<String, dynamic>);
 
-                            // treat the document with "sampleid1" as its id to be the main user
+                            // show all users who added you
                             // do not include the main user in the list builder
                             // not case sensitive
                             if (otherUsers.id != mainUser.id &&

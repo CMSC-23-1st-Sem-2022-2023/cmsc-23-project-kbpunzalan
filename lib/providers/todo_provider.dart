@@ -25,6 +25,7 @@ class TodoListProvider with ChangeNotifier {
 
   changeSelectedTodo(Todo item) {
     _selectedTodo = item;
+    notifyListeners();
   }
 
   changeSelectedUser(String item) {
@@ -39,7 +40,9 @@ class TodoListProvider with ChangeNotifier {
   }
 
   void addTodo(Todo item) async {
-    String message = await firebaseService.addTodo(item.toJson(item));
+    String message = await firebaseService.addTodo(
+      item.toJson(item),
+    );
     print(message);
     notifyListeners();
   }

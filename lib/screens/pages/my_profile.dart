@@ -273,46 +273,7 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  viewTodo(UserModel user) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
-    showDialog(
-      context: context,
-      builder: (context) => BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-        child: AlertDialog(
-          // Get available height and width of the build area of this widget. Make a choice depending on the size.
-
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          title: Text(
-            user.username,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 30,
-            ),
-          ),
-
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'Close',
-                style: TextStyle(
-                    color: Color.fromRGBO(33, 33, 33, 1),
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
+  // update the bio of the currently logged in user
   updateBio(UserModel user) {
     _bioController.text = user.bio;
 

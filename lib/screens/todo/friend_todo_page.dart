@@ -30,15 +30,13 @@ class _FriendTodoPageState extends State<FriendTodoPage> {
 
     final FirebaseFirestore db = FirebaseFirestore.instance;
 
-    print("ARGUMENT USER SELECTED ${arguments['selectedUser'].firstName}");
-
+    // selected user
     context
         .read<TodoListProvider>()
         .changeSelectedUser(arguments['selectedUser'].id);
 
     //  db.collection("users").doc(user?.uid).collection("todos").snapshots();
 
-    print("III: ${user?.uid}");
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -47,6 +45,7 @@ class _FriendTodoPageState extends State<FriendTodoPage> {
               "Todo List of ${arguments['selectedUser'].firstName} ${arguments['selectedUser'].lastName}"),
         ),
         body: StreamBuilder(
+          // get the todos of friend
           stream: db
               .collection("users")
               .doc(arguments['selectedUser'].id)
@@ -103,7 +102,8 @@ class _FriendTodoPageState extends State<FriendTodoPage> {
                                             context: context,
                                             builder: (BuildContext context) =>
                                                 TodoModal(
-                                              type: 'Edit Friend',
+                                              type:
+                                                  'Edit Friend', // edit todo of a friend
                                             ),
                                           );
                                         },
@@ -141,6 +141,7 @@ class _FriendTodoPageState extends State<FriendTodoPage> {
     );
   }
 
+  // view the todo of a friend
   viewTodo(Todo todo) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
@@ -150,8 +151,6 @@ class _FriendTodoPageState extends State<FriendTodoPage> {
       builder: (context) => BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: AlertDialog(
-          // Get available height and width of the build area of this widget. Make a choice depending on the size.
-
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -224,5 +223,17 @@ class _FriendTodoPageState extends State<FriendTodoPage> {
         ),
       ),
     );
+  }
+
+  buildListTile(IconData icon, String title, String route) {
+    return ListTile(
+        leading: Icon(
+          icon,
+          color: Colors.black,
+        ),
+        title: Text(title, style: const TextStyle(fontSize: 18)),
+        onTap: () => (route == '/logout')
+            ? context.read<AuthProvider>().signOut()
+            : Navigator.pushNamed(context, route));
   }
 }

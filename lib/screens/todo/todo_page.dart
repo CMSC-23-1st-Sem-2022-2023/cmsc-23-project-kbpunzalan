@@ -19,10 +19,18 @@ class TodoPage extends StatefulWidget {
 class _TodoPageState extends State<TodoPage> {
   @override
   Widget build(BuildContext context) {
-    // access the list of todos in the provider
+    // access the list   of todos in the provider
     User? user = context.read<AuthProvider>().user;
 
-    Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
+    print("USER ID: ${user?.uid}");
+
+    var todosStream = FirebaseFirestore.instance
+        .collection("users")
+        .doc(user?.uid)
+        .collection("todos")
+        .snapshots();
+
+    // Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
 
     print("STREAM: $todosStream");
 

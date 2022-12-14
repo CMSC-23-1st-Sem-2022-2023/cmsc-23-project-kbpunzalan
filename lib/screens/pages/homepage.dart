@@ -13,6 +13,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+// will serve as the main page for which the user will be navigated to first.
+
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {

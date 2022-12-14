@@ -9,8 +9,6 @@ import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 class FirebaseAuthAPI {
   // instance of firebase auth
 
-  static final FirebaseFirestore db = FirebaseFirestore.instance;
-
   // final db = FakeFirebaseFirestore();
 
   // final auth = MockFirebaseAuth(
@@ -25,7 +23,9 @@ class FirebaseAuthAPI {
   // auth state change: notifies about changes from the user sign in stage
   // if user is signed in or signed out
   // returns stream of data of type user
+
   final FirebaseAuth auth = FirebaseAuth.instance;
+  static final FirebaseFirestore db = FirebaseFirestore.instance;
 
   Stream<User?> getUser() {
     return auth.authStateChanges();
